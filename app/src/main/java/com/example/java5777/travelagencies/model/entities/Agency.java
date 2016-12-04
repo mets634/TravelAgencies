@@ -103,7 +103,7 @@ public class Agency {
     private long ID;
     private String name;
     private Address address;
-    private String phoneNumber;
+    private String phoneNumber; // @// TODO: 12/4/2016 CHANGE FIELD TYPE TO ANDROID TYPE PHONE NUMBER.
     private Email email;
     private URL website;
 

@@ -28,6 +28,7 @@ import java.util.Date;
  * using lists as it's data.
  * @see com.example.java5777.travelagencies.model.datasource.ListDS
  * @ TODO: 11/30/2016 May want to create a class for key constants, to make passing ContentValues easier.
+ * @// TODO: 12/4/2016 CHECK TO SEE IF BYTE[] SCHEME WORKS. 
  */
 public class ListDSManager implements DSManager {
     // implementation of DSManager interface
@@ -37,11 +38,17 @@ public class ListDSManager implements DSManager {
     @Override
     public boolean InsertUser(ContentValues userData) {
         try {
+            /*
             long ID = (Long) userData.get("ID");
             String username = (String) userData.get("username");
             String password = (String) userData.get("password");
+            
 
             ListDS.insertUser(new User(ID, username, new Password(password)));
+            */
+            
+            User user = (User) ClassSerializer.deserialize((byte[]) userData.get("User")); 
+            ListDS.insertUser(user);
         }
         catch (Exception e) {
             return false;
@@ -53,15 +60,20 @@ public class ListDSManager implements DSManager {
     @Override
     public boolean InsertAgency(ContentValues businessData) {
         try {
-
+            /*
             long ID = (long) businessData.get("ID");
             String name = (String) businessData.get("name");
             ContactsContract.CommonDataKinds.Email email = (Email) ClassSerializer.deserialize((byte[]) businessData.get("email"));
             String phoneNumber = (String) businessData.get("phonenumber");
-            Address address = (Address) businessData.get("address");
-            URL website = (URL) businessData.get("website");
+            Address address = (Address) ClassSerializer.deserialize((byte[]) businessData.get("address"));
+            URL website = (URL)  ClassSerializer.deserialize((byte[]) businessData.get("website"));
 
             ListDS.insertAgency(new Agency(ID, name, email, phoneNumber,address, website));
+            
+            */
+            
+            Agency agency = (Agency) ClassSerializer.deserialize((byte[]) businessData.get("Agency"));
+            ListDS.insertAgency(agency);
         }
         catch (Exception e) {
             return false;
@@ -73,6 +85,7 @@ public class ListDSManager implements DSManager {
     @Override
     public boolean InsertTrip(ContentValues tripData) {
         try {
+            /*
             TripType tripType = (TripType) tripData.get("triptype");
             String country = (String) tripData.get("country");
             Date start = (Date) tripData.get("start");
@@ -82,6 +95,10 @@ public class ListDSManager implements DSManager {
             long agencyID = (long) tripData.get("agencyID");
 
             ListDS.insertTrip(new Trip(tripType, country, start, end, price, description, agencyID));
+            */
+            
+            Trip trip = (Trip) ClassSerializer.deserialize((byte[]) tripData.get("Trip"));
+            ListDS.insertTrip(trip);
         }
         catch (Exception e) {
             return false;
