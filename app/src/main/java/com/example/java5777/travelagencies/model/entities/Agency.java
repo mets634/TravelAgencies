@@ -104,7 +104,7 @@ public class Agency {
     private String name;
     private Address address;
     private String phoneNumber;
-    private Email email; // @// TODO: 11/30/2016 May want to change to Android type Email variable.
+    private Email email;
     private URL website;
 
 }

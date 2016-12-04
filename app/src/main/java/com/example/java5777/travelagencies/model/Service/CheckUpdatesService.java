@@ -16,6 +16,7 @@ import com.example.java5777.travelagencies.model.backend.DSManagerFactory;
 public class CheckUpdatesService extends Service {
     private static final String TAG = "CheckUpdatesService";
     private static int INTERVAL = 10;
+    private static String ACTION = "ACTION_UPDATE";
 
     private boolean isRunning = false;
     private DSManager manager;
@@ -42,6 +43,7 @@ public class CheckUpdatesService extends Service {
      * @param flags
      * @param startId
      * @return
+     * @// TODO: 12/4/2016 MAKE SURE THIS IS WHAT THE TEACHER WANTS. 
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -55,7 +57,11 @@ public class CheckUpdatesService extends Service {
                     try {
                         Thread.sleep(INTERVAL * 1000);
                         if (manager.hasBeenUpdated()) {
-                            int a = 5; // stom
+                            
+                            // construct intent and start new activity
+                            Intent intent = new Intent();
+                            intent.setAction(ACTION);
+                            startActivity(intent);
                         }
                     }
                     catch (InterruptedException e) {
@@ -64,7 +70,7 @@ public class CheckUpdatesService extends Service {
 
                 }
 
-                //Stop service once it finishes its task
+                // stop service once it finishes its task
                 stopSelf();
             }
         }).start();
