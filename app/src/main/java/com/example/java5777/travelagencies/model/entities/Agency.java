@@ -12,7 +12,6 @@ import java.net.URL;
 /**
  * A class that represents an agency
  * using the application.
- * @version 1.0
  */
 public class Agency {
     /**
@@ -23,7 +22,7 @@ public class Agency {
      * @param phoneNumber Agency's phone number.
      * @param website Link to business website.
      */
-    public Agency(long ID, String name, Email email, String phoneNumber, Address address, URL website) {
+    public Agency(long ID, String name, String email, String phoneNumber, Address address, URL website) {
         setID(ID);
         this.website = website;
         this.email = email;
@@ -81,11 +80,11 @@ public class Agency {
         this.phoneNumber = phoneNumber;
     }
 
-    public Email getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(Email email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -103,8 +102,8 @@ public class Agency {
     private long ID;
     private String name;
     private Address address;
-    private String phoneNumber; // @// TODO: 12/4/2016 CHANGE FIELD TYPE TO ANDROID TYPE PHONE NUMBER.
-    private Email email;
+    private String phoneNumber;
+    private String email;
     private URL website;
 
 }

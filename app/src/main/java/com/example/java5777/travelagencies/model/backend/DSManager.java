@@ -57,7 +57,6 @@ public interface DSManager {
      */
     Cursor getTrips();
 
-    // @// TODO: 11/30/2016 Add last methods after checking with the teacher.
 
     /**
      * A method that checks whether

@@ -62,6 +62,15 @@ public class MyContentProvider extends ContentProvider {
                 return null;
             }
         }
+        else if (table.equalsIgnoreCase(USER_STRING))
+        {
+            try {
+                return manager.getUsers();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
 
         throw new IllegalArgumentException("Unrecognized Query");
     }
