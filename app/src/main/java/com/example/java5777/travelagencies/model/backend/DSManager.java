@@ -45,7 +45,7 @@ public interface DSManager {
     /**
      * @return A cursor containing all users.
      */
-    Cursor getUsers();
+    Cursor getUsers(String username, String password);
 
     /**
      * @return A cursor containing all business's.

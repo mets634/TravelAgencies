@@ -27,6 +27,8 @@ public class DSManagerFactory {
         dsManagers.put("List", new ListDSManager());
     }
 
+    public final static String LIST = "List";
+
     /**
      * Factory method to return the correct type of
      * DSManager given in the parameter.

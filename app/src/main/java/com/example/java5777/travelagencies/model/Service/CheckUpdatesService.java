@@ -31,7 +31,7 @@ public class CheckUpdatesService extends Service {
     public void onCreate() {
         Log.i(TAG, "Service onCreate");
 
-        manager = DSManagerFactory.getDSManager("List"); // initiate manager
+        manager = DSManagerFactory.getDSManager(DSManagerFactory.LIST); // initiate manager
         isRunning = true;
     }
 

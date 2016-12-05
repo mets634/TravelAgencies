@@ -43,6 +43,11 @@ public class Password {
         this.salt = salt;
     }
 
+    public Password() {
+        this.hash = "";
+        this.salt = "";
+    }
+
     @Override
     public String toString() {
         return "Password{" +
@@ -60,16 +65,11 @@ public class Password {
      * @throws InvalidKeySpecException
      */
     public boolean validatePassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        if (hash.equals("")) // password not set
+            return false;
         return hash.equals( generateHash(password, salt) );
     }
 
-    public String getHash() {
-        return hash;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
 // class fields
 
     /**

@@ -20,6 +20,12 @@
             android:name=".model.Service.CheckUpdatesService"
             android:enabled="true"
             android:exported="true"></service>
+
+        <provider
+            android:name=".model.datasource.TravelAgenciesProvider"
+            android:authorities="com.example.java5775.travelagencies.TravelAgenciesProvider"
+            android:Permission="com.example.java5775.travelagencies.permission."
+            />
     </application>
 
 </manifest>
