@@ -20,15 +20,16 @@ import com.example.java5777.travelagencies.model.entities.TripType;
 import com.example.java5777.travelagencies.model.entities.User;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * A class implementing the data
  * source manager interface
  * using lists as it's data.
  * @see com.example.java5777.travelagencies.model.datasource.ListDS
- * @ TODO: 11/30/2016 May want to create a class for key constants, to make passing ContentValues easier.
- * @// TODO: 12/4/2016 CHECK TO SEE IF BYTE[] SCHEME WORKS. 
  */
 public class ListDSManager implements DSManager {
     // implementation of DSManager interface
@@ -38,17 +39,13 @@ public class ListDSManager implements DSManager {
     @Override
     public boolean InsertUser(ContentValues userData) {
         try {
-            /*
-            long ID = (Long) userData.get("ID");
-            String username = (String) userData.get("username");
-            String password = (String) userData.get("password");
-            
+            // get data
+            long ID = (long) userData.get(User.ID_VALUE);
+            String username = (String) userData.get(User.USERNAME_VALUE);
+            String password = (String) userData.get(User.PASSWORD_VALUE);
 
+            // insert data
             ListDS.insertUser(new User(ID, username, new Password(password)));
-            */
-            
-            User user = (User) ClassSerializer.deserialize((byte[]) userData.get("User")); 
-            ListDS.insertUser(user);
         }
         catch (Exception e) {
             return false;
@@ -58,22 +55,21 @@ public class ListDSManager implements DSManager {
     }
 
     @Override
-    public boolean InsertAgency(ContentValues businessData) {
+    public boolean InsertAgency(ContentValues agencyData) {
         try {
-            /*
-            long ID = (long) businessData.get("ID");
-            String name = (String) businessData.get("name");
-            ContactsContract.CommonDataKinds.Email email = (Email) ClassSerializer.deserialize((byte[]) businessData.get("email"));
-            String phoneNumber = (String) businessData.get("phonenumber");
-            Address address = (Address) ClassSerializer.deserialize((byte[]) businessData.get("address"));
-            URL website = (URL)  ClassSerializer.deserialize((byte[]) businessData.get("website"));
+            // get data
+            long ID = (long) agencyData.get(Agency.ID_VALUE);
+            String name = (String) agencyData.get(Agency.NAME_VALUE);
+            String email = (String) agencyData.get(Agency.EMAIL_VALUE);
+            String phoneNumber = (String) agencyData.get(Agency.PHONENUMBER_VALUE);
+            String country = (String) agencyData.get(Address.COUNTRY_VALUE);
+            String city = (String) agencyData.get(Address.CITY_VALUE);
+            String street = (String) agencyData.get(Address.STREET_VALUE);
+            String website = (String) agencyData.get("website");
 
-            ListDS.insertAgency(new Agency(ID, name, email, phoneNumber,address, website));
-            
-            */
-            
-            Agency agency = (Agency) ClassSerializer.deserialize((byte[]) businessData.get("Agency"));
-            ListDS.insertAgency(agency);
+            // insert data
+            ListDS.insertAgency(new Agency(ID, name, email, phoneNumber, new Address(country, city, street), website));
+
         }
         catch (Exception e) {
             return false;
@@ -85,20 +81,22 @@ public class ListDSManager implements DSManager {
     @Override
     public boolean InsertTrip(ContentValues tripData) {
         try {
-            /*
-            TripType tripType = (TripType) tripData.get("triptype");
-            String country = (String) tripData.get("country");
-            Date start = (Date) tripData.get("start");
-            Date end = (Date) tripData.get("end");
-            Integer price = (Integer) tripData.get("price");
-            String description = (String) tripData.get("description");
-            long agencyID = (long) tripData.get("agencyID");
+            // get data
+            TripType tripType = TripType.valueOf( (String) tripData.get(Trip.TYPE_VALUE) );
+            String country = (String) tripData.get(Trip.COUNTRY_VALUE);
 
+            GregorianCalendar start = new GregorianCalendar();
+            start.setTimeInMillis( (Long) tripData.get(Trip.START_VALUE ) );
+
+            GregorianCalendar end = new GregorianCalendar();
+            end.setTimeInMillis( (Long) tripData.get(Trip.END_VALUE) );
+
+            Integer price = (Integer) tripData.get(Trip.PRICE_VALUE);
+            String description = (String) tripData.get(Trip.DESCRIPTION_VALUE);
+            long agencyID = (long) tripData.get(Trip.AGENCYID_VALUE);
+
+            // insert data
             ListDS.insertTrip(new Trip(tripType, country, start, end, price, description, agencyID));
-            */
-            
-            Trip trip = (Trip) ClassSerializer.deserialize((byte[]) tripData.get("Trip"));
-            ListDS.insertTrip(trip);
         }
         catch (Exception e) {
             return false;
@@ -112,30 +110,66 @@ public class ListDSManager implements DSManager {
 
     @Override
     public Cursor getUsers() {
-        final String[] columns = { "ID", "username", "password" };
+        MatrixCursor cursor = new MatrixCursor(User.CURSOR_COLUMNS); // create cursor
 
-        MatrixCursor cursor = new MatrixCursor(columns); // create cursor
-        cursor.addRow(ListDS.cloneUserArrayList()); // add data to cursor
+        // for each user, insert it into cursor
+        for (User u : ListDS.cloneUserArrayList()) {
+            // format data into list
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add(((Long) u.getID()).toString());
+            temp.add(u.getUsername());
+            temp.add(u.getPassword().getHash());
+            temp.add(u.getPassword().getSalt());
+
+            cursor.addRow(temp); // insert data
+        }
 
         return cursor;
     }
 
     @Override
     public Cursor getAgencies() {
-        final String[] columns = { "ID", "name", "address", "phonenumber", "email", "website" };
+        MatrixCursor cursor = new MatrixCursor(Agency.CURSOR_COLUMNS); // create cursor
 
-        MatrixCursor cursor = new MatrixCursor(columns); // create cursor
-        cursor.addRow(ListDS.cloneAgencyArrayList()); // add data to cursor
+        // for each agency, insert it into cursor
+        for (Agency a : ListDS.cloneAgencyArrayList()) {
+            // format data into list
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add(((Long) a.getID()).toString());
+            temp.add(a.getName());
+            temp.add(a.getAddress().country);
+            temp.add(a.getAddress().city);
+            temp.add(a.getAddress().street);
+            temp.add(a.getPhoneNumber());
+            temp.add(a.getEmail());
+            temp.add(a.getWebsite());
+
+            cursor.addRow(temp); // insert data
+        }
 
         return cursor;
     }
 
     @Override
     public Cursor getTrips() {
-        final String[] columns = { "type", "country", "start", "end", "price", "description", "agencyID" };
 
-        MatrixCursor cursor = new MatrixCursor(columns); // create cursor
-        cursor.addRow(ListDS.cloneTripArrayList()); // add data to cursor
+
+        MatrixCursor cursor = new MatrixCursor(Trip.CURSOR_COLUMNS); // create cursor
+
+        // for each trip, insert it into cursor
+        for (Trip t : ListDS.cloneTripArrayList()) {
+            // format data into list
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add(t.getType().toString());
+            temp.add(t.getCountry());
+            temp.add( ( (Long) t.getStart().getTimeInMillis() ).toString() );
+            temp.add( ( (Long) t.getEnd().getTimeInMillis() ) .toString());
+            temp.add(t.getPrice().toString());
+            temp.add(t.getDescription());
+            temp.add(((Long) t.getAgencyID()).toString());
+
+            cursor.addRow(temp); // insert data
+        }
 
         return cursor;
     }
@@ -151,6 +185,8 @@ public class ListDSManager implements DSManager {
      */
     private boolean dsHasBeenUpdated = false;
 
+    // @// TODO: 12/5/2016 TEST HASBEENUPDATED METHOD 
+    
     @Override
     public boolean hasBeenUpdated() {
         boolean tmp = dsHasBeenUpdated; // hold onto old data
