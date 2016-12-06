@@ -30,9 +30,11 @@ import java.util.GregorianCalendar;
 public final class TravelAgenciesContract {
     private TravelAgenciesContract() {}
 
-    public static final String CONTENT_AUTHORITY = "com.example.java5775.travelagencies.TravelAgenciesProvider";
+    public static final String CONTENT_AUTHORITY = "com.example.java5777.travelagencies.TravelAgenciesProvider";
 
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY + "/cte");
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+
+    public static final String PERMISSIONS = "com.example.java5777.travelagencies.permissions.ACCESS_DATA";
 
     public static final String PATH_AGENCY = "agency";
     public static final String PATH_USER = "user";
@@ -93,6 +95,9 @@ public final class TravelAgenciesContract {
          * @throws Exception
          */
         public static ArrayList<Agency> cursorToList(Cursor agencies) throws Exception {
+            if (agencies == null)
+                return new ArrayList<>();
+
             if (!agencies.getColumnNames().equals(COLUMNS)) // incorrect cursor
                 throw new IllegalArgumentException("Cursor Must Contain a Result of Agencies");
 
@@ -124,7 +129,9 @@ public final class TravelAgenciesContract {
          * Android ContentValues.
          * @param ID
          * @param name
-         * @param address
+         * @param country
+         * @param city
+         * @param street
          * @param phoneNumber
          * @param email
          * @param website
@@ -201,6 +208,9 @@ public final class TravelAgenciesContract {
          * @throws Exception
          */
         public static ArrayList<User> cursorToUsers(Cursor users) throws Exception {
+            if (users == null)
+                return new ArrayList<>();
+
             if (!users.getColumnNames().equals(COLUMNS)) // incorrect cursor
                 throw new IllegalArgumentException("Cursor Must Contain a Result of Users");
 
@@ -295,6 +305,9 @@ public final class TravelAgenciesContract {
          * @throws Exception
          */
         public static ArrayList<Trip> cursorToList(Cursor trips) throws Exception {
+            if (trips == null)
+                return new ArrayList<>();
+
             if (!trips.getColumnNames().equals(COLUMNS)) // incorrect cursor
                 throw new IllegalArgumentException("Cursor Must Contain a Result of Trips");
 
@@ -339,7 +352,7 @@ public final class TravelAgenciesContract {
          * @param agencyID
          * @return A ContentValues conatining all the values.
          */
-        public static ContentValues createContentValues(TripType type, String country, Calendar start, Calendar end, Integer price, String description, long agencyID) {
+        public static ContentValues createContentValues(TripType type, String country, GregorianCalendar start, GregorianCalendar end, Integer price, String description, long agencyID) {
             ContentValues res = new ContentValues();
 
             res.put(COLUMN_TYPE, type.toString());

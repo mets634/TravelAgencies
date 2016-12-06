@@ -33,9 +33,9 @@ public class TravelAgenciesProvider extends ContentProvider {
 
     // Set the URI's
     static {
-        sUriMatcher.addURI("com.example.java5777.travelagencies", TravelAgenciesContract.PATH_AGENCY, AGENCY_URI_ID);
-        sUriMatcher.addURI("com.example.java5777.travelagencies", TravelAgenciesContract.PATH_USER, USER_URI_ID);
-        sUriMatcher.addURI("com.example.java5777.travelagencies", TravelAgenciesContract.PATH_TRIP, TRIP_URI_ID);
+        sUriMatcher.addURI(TravelAgenciesContract.CONTENT_AUTHORITY, TravelAgenciesContract.PATH_AGENCY, AGENCY_URI_ID);
+        sUriMatcher.addURI(TravelAgenciesContract.CONTENT_AUTHORITY, TravelAgenciesContract.PATH_USER, USER_URI_ID);
+        sUriMatcher.addURI(TravelAgenciesContract.CONTENT_AUTHORITY, TravelAgenciesContract.PATH_TRIP, TRIP_URI_ID);
     }
 
 

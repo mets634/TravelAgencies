@@ -22,10 +22,11 @@
             android:exported="true"></service>
 
         <provider
-            android:name=".model.datasource.TravelAgenciesProvider"
-            android:authorities="com.example.java5775.travelagencies.TravelAgenciesProvider"
-            android:Permission="com.example.java5775.travelagencies.permission."
-            />
+            android:name="com.example.java5777.travelagencies.model.datasource.TravelAgenciesProvider"
+            android:authorities="com.example.java5777.travelagencies.TravelAgenciesProvider"
+            android:permission="com.example.java5777.travelagencies.permissions.ACCESS_DATA"
+            android:exported="true">
+        </provider>
     </application>
 
 </manifest>

@@ -21,6 +21,7 @@ import com.example.java5777.travelagencies.model.entities.TripType;
 import com.example.java5777.travelagencies.model.entities.User;
 import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract.AgencyEntry;
 import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract.TripEntry;
+import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract.UserEntry;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -113,7 +114,7 @@ public class ListDSManager implements DSManager {
 
     @Override
     public Cursor getUsers(String username, String password) {
-        MatrixCursor cursor = new MatrixCursor(User.CURSOR_COLUMNS); // create cursor
+        MatrixCursor cursor = new MatrixCursor(UserEntry.COLUMNS); // create cursor
 
         // for each user, insert it into cursor
         for (User u : ListDS.cloneUserArrayList()) {
@@ -124,6 +125,7 @@ public class ListDSManager implements DSManager {
 
                     temp.add(((Long) u.getID()).toString());
                     temp.add(u.getUsername());
+                    temp.add(""); // return password = ""
 
                     cursor.addRow(temp); // insert data
                     return cursor;
