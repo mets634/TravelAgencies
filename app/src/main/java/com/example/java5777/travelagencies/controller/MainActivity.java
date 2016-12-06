@@ -2,6 +2,7 @@ package com.example.java5777.travelagencies.controller;
 
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,5 +38,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+
+
     }
+
 }

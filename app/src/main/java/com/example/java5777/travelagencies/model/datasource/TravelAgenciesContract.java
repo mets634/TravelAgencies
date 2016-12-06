@@ -26,6 +26,32 @@ import java.util.GregorianCalendar;
  * Any action done on content provider not
  * according to the contract will result in
  * either an exception or null will be returned.
+ *
+ * <h1><u>HOW TO USE EXAMPLES</u></h1>
+ * <p><h3>Inserting an agency:</h3>
+ * <code>
+ *     // create ContentValues with agency data <br>
+ *     ContentValues cv = AgencyEntry.createContentValues(<br>
+ *     1, "my name", "my country", "my city", "my street", "2222222", "myemail@mydomain.com", "mywebsite.com"<br>
+ *     );
+ *      <br>
+ *     Uri uri = getContentResolver().insert(AgencyEntry.CONTENT_URI, cv); // execute insert<br><br>
+ * </code>
+ *
+ * Variable uri will hold in it's ID either 0 or 1. 0 meaning failure, and 1 meaning successful.</p>
+ *
+ * <p><h3>Receiving a list of all agencies:</h3>
+ * <code>
+ *     // query the datasource for agencies <br>
+ *     Cursor c = getContentResolver().query(AgencyEntry.CONTENT_URI, null, null, null, null);<br>
+ *     ArrayList<Agency> list = AgencyEntry.cursorToList(c); // convert cursor to list <br><br>
+ * </code>
+ *
+ * Be aware that method cursorToList throws exception.</p>
+ *
+ * @see AgencyEntry
+ * @see UserEntry
+ * @see TripEntry
  */
 public final class TravelAgenciesContract {
     private TravelAgenciesContract() {}
@@ -44,16 +70,16 @@ public final class TravelAgenciesContract {
      * A class containing data used to access
      * the content provider for Agency-type data.
      *
-     * There are two operation that can be done using this class:
-     * 1) Inserting a new agency.
-     * 2) Receiving a list of agencies. NOTE: Will contain all of the agencies.
+     * There are two operation that can be done using this class:<br>
+     * 1) Inserting a new agency.<br>
+     * 2) Receiving a list of agencies. NOTE: Will contain all of the agencies.<br>
      *
      * <h1>Inserting a new agency:</h1>
      * <p>To insert a new agency you must call the
-     * content provider's 'insert' method with two parameters:
-     * 1) <b>AgencyEntry.CONTENT_URI</b>.
+     * content provider's 'insert' method with two parameters:<br>
+     * 1) <b>AgencyEntry.CONTENT_URI</b>.<br>
      * 2) A ContentValues object containing the correct data.
-     * Can be created using AgencyEntry.createContentValues.
+     * Can be created using AgencyEntry.createContentValues.<br><br>
      *
      * If successful a URI with id=1 will be returned.
      * Otherwise id=0 will be returned.</p>
@@ -61,9 +87,9 @@ public final class TravelAgenciesContract {
      * <h1>Receiving a list of agencies:</h1>
      * <p>To receive a list of agencies you must call
      * the content provider's 'query' method with every parameter
-     * being null other than the URI which should be: <b>AgencyEntry.CONTENT_URI</b>.
+     * being null other than the URI which should be: <b>AgencyEntry.CONTENT_URI</b>.<br><br>
      * Use AgencyEntry.cursorToList to convert returned cursor
-     * to list of lgencies.</p>
+     * to list of agencies.</p>
      */
     public static final class AgencyEntry implements BaseColumns {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_AGENCY).build();
@@ -157,30 +183,30 @@ public final class TravelAgenciesContract {
      * A class containing data used to access
      * the content provider for User-type data.
      *
-     * There are two operation that can be done using this class:
-     * 1) Inserting a new User.
-     * 2) Receiving a given user.
+     * There are two operation that can be done using this class:<br>
+     * 1) Inserting a new User.<br>
+     * 2) Receiving a given user.<br><br>
      *
      * <h1>Inserting a new agency:</h1>
      * <p>To insert a new user you must call
      * the content provider's 'insert' method with
-     * two parameters:
-     * 1) <b>UserEntry.CONTENT_URI</b>.
-     * 2) A ContentValues object containing the correct data.
-     * Can be created using UserEntry.createContentValues.
+     * two parameters:<br>
+     * 1) <b>UserEntry.CONTENT_URI</b>.<br>
+     * 2) A ContentValues object containing the correct data.<br>
+     * Can be created using UserEntry.createContentValues.<br><br>
      *
      * If successful a URI with id=1 will be returned.
-     * Otherwise id=0 will be returned.</p>
+     * Otherwise id=0 will be returned.</p><br>
      *
      * <h1>Receiving a given user</h1>
      * <p>To receive a given user you must call
      * the content provider's 'query' method
-     * with all parameters being null other than two:
-     * 1) The URI should be <b>UserEntry.CONTENT_URI</b>.
+     * with all parameters being null other than two:<br>
+     * 1) The URI should be <b>UserEntry.CONTENT_URI</b>.<br>
      * 2) The selectionArgs should contain exactly two
      * Strings in the following order: username, password.
      * You can convert the returned cursor to a list of users
-     * by using the UserEntry.cursorToList method.
+     * by using the UserEntry.cursorToList method.<br><br>
      *
      * NOTE: This is how you can validate a user by a given
      * username and password, as the content provider does
@@ -255,24 +281,24 @@ public final class TravelAgenciesContract {
      * A class containing data used to access
      * the content provider for Trip-type data.
      *
-     * There are two operation that can be done using this class:
-     * 1) Inserting a new trip.
-     * 2) Receiving a list of trip. NOTE: Will contain all of the agencies.
+     * There are two operation that can be done using this class:<br>
+     * 1) Inserting a new trip.<br>
+     * 2) Receiving a list of trip. NOTE: Will contain all of the agencies.<br>
      *
      * <h1>Inserting a new trip:</h1>
      * <p>To insert a new trip you must call the
-     * content provider's 'insert' method with two parameters:
-     * 1) <b>TripEntry.CONTENT_URI</b>.
+     * content provider's 'insert' method with two parameters:<br>
+     * 1) <b>TripEntry.CONTENT_URI</b>.<br>
      * 2) A ContentValues object containing the correct data.
-     * Can be created using TripEntry.createContentValues.
+     * Can be created using TripEntry.createContentValues.<br><br>
      *
      * If successful a URI with id=1 will be returned.
-     * Otherwise id=0 will be returned.</p>
+     * Otherwise id=0 will be returned.</p><br>
      *
      * <h1>Receiving a list of trips:</h1>
      * <p>To receive a list of trips you must call
      * the content provider's 'query' method with every parameter
-     * being null other than the URI which should be: <b>TripEntry.CONTENT_URI</b>.
+     * being null other than the URI which should be: <b>TripEntry.CONTENT_URI</b>.<br>
      * Use TripEntry.cursorToList to convert returned cursor
      * to List of trips.</p>
      */

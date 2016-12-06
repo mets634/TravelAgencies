@@ -18,7 +18,7 @@ import com.example.java5777.travelagencies.model.backend.DSManagerFactory;
 /**
  * A class to implement the
  * application's content provider.
- * @// TODO: 12/5/2016 TEST. 
+ * @see TravelAgenciesContract How to use the content provider.
  */
 public class TravelAgenciesProvider extends ContentProvider {
 
