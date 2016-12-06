@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,7 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     public Button registerButton;
     public EditText username;
     public EditText password;
-    public CheckBox keepMeLoggedBox;
+    public CheckBox rememberMeBox;
 
     SharedPreferences prefs;
 
@@ -35,17 +34,21 @@ public class LoginActivity extends AppCompatActivity {
         registerButton = (Button) findViewById(R.id.registerButton);
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
-        keepMeLoggedBox = (CheckBox) findViewById(R.id.keepMeLoggedBox);
+        rememberMeBox = (CheckBox) findViewById(R.id.rememberMeBox);
 
         prefs = getSharedPreferences("UsersInfo", 0);
+
+        //check if there is a saved user name and password
 
         // implement onClick method for login
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //check if user is in the system and check if it's a correct password
-                //if it's a user, it saves the details in the shared preferences
-
+                //if it's a user, and "Remember Me", it saves the details in the shared preferences
+                //
+                Intent intent = new Intent(LoginActivity.this, MainOptionsActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -53,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                username.setText("Name", TextView.BufferType.EDITABLE);
+                username.setText("Username", TextView.BufferType.EDITABLE);
                 password.setText("", TextView.BufferType.EDITABLE);
             }
         });
@@ -63,6 +66,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                intent.putExtra("username", username.getText().toString());
+                intent.putExtra("password", password.getText().toString());
                 startActivity(intent);
             }
         });

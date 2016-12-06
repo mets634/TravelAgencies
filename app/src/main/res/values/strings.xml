@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TravelAgencies</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="clear">Clear</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
 </resources>

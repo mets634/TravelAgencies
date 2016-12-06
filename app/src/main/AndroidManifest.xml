@@ -21,7 +21,9 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".controller.RegisterActivity"></activity>
+        <activity android:name=".controller.RegisterActivity" />
+        <activity android:name=".controller.MainOptionsActivity" />
+        <activity android:name=".controller.AddActivitiesActivity"></activity>
     </application>
 
 </manifest>

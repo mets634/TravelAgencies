@@ -14,12 +14,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name"
         android:ems="10"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="61dp"
-        android:id="@+id/username" />
+        android:id="@+id/username"
+        android:text="Username" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -60,14 +60,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/loginButton"
         android:layout_marginTop="41dp"
-        android:layout_below="@+id/keepMeLoggedBox"
+        android:layout_below="@+id/rememberMeBox"
         android:layout_centerHorizontal="true" />
 
     <CheckBox
-        android:text="Keep Me Logged In"
+        android:text="Remember Me"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/keepMeLoggedBox"
+        android:id="@+id/rememberMeBox"
         android:layout_marginTop="42dp"
         android:layout_below="@+id/password"
         android:layout_centerHorizontal="true" />
