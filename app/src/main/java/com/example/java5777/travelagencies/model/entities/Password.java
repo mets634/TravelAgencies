@@ -43,6 +43,19 @@ public class Password {
         this.salt = salt;
     }
 
+    public Password() {
+        this.hash = "";
+        this.salt = "";
+    }
+
+    @Override
+    public String toString() {
+        return "Password{" +
+                "hash='" + hash + '\'' +
+                ", salt='" + salt + '\'' +
+                '}';
+    }
+
     /**
      * A method to check if given password
      * matches the hash stored.
@@ -51,11 +64,13 @@ public class Password {
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeySpecException
      */
-    private boolean validatePassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        return hash == generateHash(password, salt);
+    public boolean validatePassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        if (hash.equals("")) // password not set
+            return false;
+        return hash.equals( generateHash(password, salt) );
     }
 
-    // class fields
+// class fields
 
     /**
      * Factor against dictionary attacks. The

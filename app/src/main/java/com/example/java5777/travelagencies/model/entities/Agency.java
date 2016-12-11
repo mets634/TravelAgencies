@@ -1,9 +1,15 @@
 package com.example.java5777.travelagencies.model.entities;
 
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Email;
 
+import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract;
+import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract.AgencyEntry;
+
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Created by yonah on 11/29/2016.
@@ -12,7 +18,6 @@ import java.net.URL;
 /**
  * A class that represents an agency
  * using the application.
- * @version 1.0
  */
 public class Agency {
     /**
@@ -23,7 +28,7 @@ public class Agency {
      * @param phoneNumber Agency's phone number.
      * @param website Link to business website.
      */
-    public Agency(long ID, String name, Email email, String phoneNumber, Address address, URL website) {
+    public Agency(long ID, String name, String email, String phoneNumber, Address address, String website) {
         setID(ID);
         this.website = website;
         this.email = email;
@@ -81,19 +86,19 @@ public class Agency {
         this.phoneNumber = phoneNumber;
     }
 
-    public Email getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(Email email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public URL getWebsite() {
+    public String getWebsite() {
         return website;
     }
 
-    public void setWebsite(URL website) {
+    public void setWebsite(String website) {
         this.website = website;
     }
 
@@ -104,7 +109,7 @@ public class Agency {
     private String name;
     private Address address;
     private String phoneNumber;
-    private Email email; // @// TODO: 11/30/2016 May want to change to Android type Email variable.
-    private URL website;
+    private String email;
+    private String website;
 
 }

@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".controller.LoginActivity">
+        <activity android:name=".controller.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,11 +19,14 @@
         <service
             android:name=".model.Service.CheckUpdatesService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"></service>
 
-        <activity android:name=".controller.RegisterActivity" />
-        <activity android:name=".controller.MainOptionsActivity" />
-        <activity android:name=".controller.AddActivitiesActivity"></activity>
+        <provider
+            android:name="com.example.java5777.travelagencies.model.datasource.TravelAgenciesProvider"
+            android:authorities="com.example.java5777.travelagencies.TravelAgenciesProvider"
+            android:permission="com.example.java5777.travelagencies.permissions.ACCESS_DATA"
+            android:exported="true">
+        </provider>
     </application>
 
 </manifest>

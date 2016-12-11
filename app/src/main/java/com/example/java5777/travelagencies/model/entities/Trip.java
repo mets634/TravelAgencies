@@ -4,7 +4,17 @@ package com.example.java5777.travelagencies.model.entities;
  * Created by yonah on 11/29/2016.
  */
 
+import android.content.ContentValues;
+import android.database.Cursor;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+
+import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract.TripEntry;
 
 /**
  * A class to represent a trip on the application.
@@ -20,7 +30,7 @@ public class Trip {
      * @param description Trip description.
      * @param agencyID ID of business sponsoring the trip.
      */
-    public Trip(TripType type, String country, Date start, Date end, Integer price, String description, long agencyID) {
+    public Trip(TripType type, String country, GregorianCalendar start, GregorianCalendar end, Integer price, String description, long agencyID) {
         this.type = type;
         this.country = country;
         this.start = start;
@@ -35,13 +45,15 @@ public class Trip {
         return "Trip{" +
                 "type=" + type +
                 ", country='" + country + '\'' +
-                ", start=" + start +
-                ", end=" + end +
+                ", start=" + ((Long) start.getTimeInMillis()).toString() +
+                ", end=" + ((Long) end.getTimeInMillis()).toString() +
                 ", price=" + price +
                 ", description='" + description + '\'' +
                 ", agencyID='" + agencyID + '\'' +
                 '}';
     }
+
+
 
 
     // Getters and setters
@@ -62,19 +74,19 @@ public class Trip {
         this.country = country;
     }
 
-    public Date getStart() {
+    public GregorianCalendar getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(GregorianCalendar start) {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public GregorianCalendar getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(GregorianCalendar end) {
         this.end = end;
     }
 
@@ -109,8 +121,8 @@ public class Trip {
 
     private TripType type;
     private String country;
-    private Date start;
-    private Date end;
+    private GregorianCalendar start;
+    private GregorianCalendar end;
     private Integer price;
     private String description;
     private long agencyID;

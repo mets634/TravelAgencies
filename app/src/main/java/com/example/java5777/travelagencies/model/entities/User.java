@@ -4,6 +4,11 @@ package com.example.java5777.travelagencies.model.entities;
  * Created by yonah on 11/29/2016.
  */
 
+import android.content.ContentValues;
+import android.database.Cursor;
+
+import java.util.ArrayList;
+
 /**
  * A class representing a user of the application.
  */
@@ -28,6 +33,18 @@ public class User {
                 ", password='" + password + '\'' +
                 '}';
     }
+
+    public final static String ID_VALUE = "ID";
+    public final static String USERNAME_VALUE = "username";
+    public final static String PASSWORD_VALUE = "password";
+
+    public final static String CURSOR_ID = "ID";
+    public final static String CURSOR_USERNAME = "username";
+    public final static String CURSOR_HASH = "hash";
+    public final static String CURSOR_SALT = "salt";
+
+    public static final String[] CURSOR_COLUMNS = { CURSOR_ID, CURSOR_USERNAME, CURSOR_HASH, CURSOR_SALT };
+
 
 
     // Getters and setters

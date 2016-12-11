@@ -45,7 +45,7 @@ public interface DSManager {
     /**
      * @return A cursor containing all users.
      */
-    Cursor getUsers();
+    Cursor getUsers(String username, String password);
 
     /**
      * @return A cursor containing all business's.
@@ -57,7 +57,6 @@ public interface DSManager {
      */
     Cursor getTrips();
 
-    // @// TODO: 11/30/2016 Add last methods after checking with the teacher.
 
     /**
      * A method that checks whether
