@@ -14,7 +14,6 @@ import com.example.java5777.travelagencies.model.datasource.ListDS;
 import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract;
 import com.example.java5777.travelagencies.model.entities.Address;
 import com.example.java5777.travelagencies.model.entities.Agency;
-import com.example.java5777.travelagencies.model.entities.ClassSerializer;
 import com.example.java5777.travelagencies.model.entities.Password;
 import com.example.java5777.travelagencies.model.entities.Trip;
 import com.example.java5777.travelagencies.model.entities.TripType;

@@ -27,6 +27,7 @@ public class TravelAgenciesProvider extends ContentProvider {
     private final static int AGENCY_URI_ID = 1;
     private final static int USER_URI_ID = 2;
     private final static int TRIP_URI_ID = 3;
+    private final static int HASBEENUPDATED_URI_ID = 4;
 
     private static DSManager manager = DSManagerFactory.getDSManager(DSManagerFactory.LIST);
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);

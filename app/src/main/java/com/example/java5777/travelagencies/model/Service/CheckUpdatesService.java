@@ -2,9 +2,12 @@ package com.example.java5777.travelagencies.model.Service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.java5777.travelagencies.controller.MainActivity;
 import com.example.java5777.travelagencies.model.backend.DSManager;
 import com.example.java5777.travelagencies.model.backend.DSManagerFactory;
 
@@ -12,11 +15,12 @@ import com.example.java5777.travelagencies.model.backend.DSManagerFactory;
  * A class that implements a service that will check every
  * 'interval' number of seconds whether there has been a
  * change in the data source.
+ * @// TODO: 12/6/2016 CHANGE ACCESS FROM USING DATABASE TO USING CONTENT PROVIDER. 
  */
 public class CheckUpdatesService extends Service {
     private static final String TAG = "CheckUpdatesService";
-    private static int INTERVAL = 10;
-    private static String ACTION = "ACTION_UPDATE";
+    private final static int INTERVAL = 10;
+    private final static String ACTION = "ACTION_UPDATE";
 
     private boolean isRunning = false;
     private DSManager manager;
@@ -43,37 +47,36 @@ public class CheckUpdatesService extends Service {
      * @param flags
      * @param startId
      * @return
-     * @// TODO: 12/4/2016 MAKE SURE THIS IS WHAT THE TEACHER WANTS. 
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "Service onStartCommand");
 
-        // creating new thread for service
-        new Thread(new Runnable() {
+        // creating new async task to
+        // check for update in background
+        new AsyncTask<Void, Void, Void>() {
             @Override
-            public void run() {
+            protected Void doInBackground(Void... params) {
                 while (isRunning) {
                     try {
                         Thread.sleep(INTERVAL * 1000);
-                        if (manager.hasBeenUpdated()) {
-                            
-                            // construct intent and start new activity
-                            Intent intent = new Intent();
-                            intent.setAction(ACTION);
-                            startActivity(intent);
-                        }
+                        //if (manager.hasBeenUpdated()) {
+
+                            // construct intent and send broadcast
+                        Intent intent = new Intent();
+                        intent.setAction(ACTION);
+                        intent.putExtra("yonah", "mann");
+                        sendBroadcast(intent);
+                        //}
                     }
                     catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
                 }
-
-                // stop service once it finishes its task
                 stopSelf();
+                return null;
             }
-        }).start();
+        }.execute();
 
         return Service.START_STICKY;
     }
