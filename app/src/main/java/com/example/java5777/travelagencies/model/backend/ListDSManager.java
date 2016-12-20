@@ -109,6 +109,9 @@ public class ListDSManager implements DSManager {
             String description = (String) tripData.get( TripEntry.COLUMN_DESCRIPTION );
             long agencyID = (long) tripData.get( TripEntry.COLUMN_AGENCYID );
 
+            if (!agency_exists(agencyID)) // no such agency
+                    return TravelAgenciesContract.CODE_AGENCY_NOT_FOUND;
+
             // insert data
             ListDS.insertTrip(new Trip(tripType, country, start, end, price, description, agencyID));
             tripHasBeenUpdated = true;
