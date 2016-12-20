@@ -62,7 +62,7 @@ public interface DSManager {
      * A method that checks whether
      * data source has been updated
      * since last check.
-     * @return True if data source has been updated.
+     * @return A cursor if has been updated, otherwise null.
      */
-    boolean hasBeenUpdated();
+    Cursor hasBeenUpdated();
 }

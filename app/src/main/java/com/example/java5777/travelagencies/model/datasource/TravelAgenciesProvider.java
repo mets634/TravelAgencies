@@ -37,6 +37,7 @@ public class TravelAgenciesProvider extends ContentProvider {
         sUriMatcher.addURI(TravelAgenciesContract.CONTENT_AUTHORITY, TravelAgenciesContract.PATH_AGENCY, AGENCY_URI_ID);
         sUriMatcher.addURI(TravelAgenciesContract.CONTENT_AUTHORITY, TravelAgenciesContract.PATH_USER, USER_URI_ID);
         sUriMatcher.addURI(TravelAgenciesContract.CONTENT_AUTHORITY, TravelAgenciesContract.PATH_TRIP, TRIP_URI_ID);
+        sUriMatcher.addURI(TravelAgenciesContract.CONTENT_AUTHORITY, TravelAgenciesContract.PATH_HASBEENUPDATED, HASBEENUPDATED_URI_ID);
     }
 
 
@@ -60,6 +61,9 @@ public class TravelAgenciesProvider extends ContentProvider {
                 if (selectionArgs.length != 2)
                     return null;
                 return manager.getUsers(selectionArgs[0], selectionArgs[1]);
+
+            case HASBEENUPDATED_URI_ID:
+                return manager.hasBeenUpdated();
 
             default:
                 throw new IllegalArgumentException("Unrecognized Query-Table");

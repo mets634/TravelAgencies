@@ -40,4 +40,38 @@
         android:layout_marginRight="45dp"
         android:layout_marginEnd="45dp"
         android:id="@+id/endServiceButton" />
+
+    <Button
+        android:text="Add Agency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addAgencyButton"
+        android:layout_alignBaseline="@+id/addUserButton"
+        android:layout_alignBottom="@+id/addUserButton"
+        android:layout_centerHorizontal="true"
+        android:onClick="addAgencyButtonOnClick"/>
+
+    <Button
+        android:text="Add Trip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/addAgencyButton"
+        android:layout_toRightOf="@+id/addAgencyButton"
+        android:layout_toEndOf="@+id/addAgencyButton"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"
+        android:id="@+id/addTripButton"
+        android:onClick="addTripButtonOnClick"/>
+
+    <Button
+        android:text="Add User"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"
+        android:id="@+id/addUserButton"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="addUserButtonOnClick"/>
 </RelativeLayout>

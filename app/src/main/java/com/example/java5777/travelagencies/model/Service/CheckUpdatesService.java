@@ -2,6 +2,7 @@ package com.example.java5777.travelagencies.model.Service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
@@ -10,6 +11,8 @@ import android.widget.Toast;
 import com.example.java5777.travelagencies.controller.MainActivity;
 import com.example.java5777.travelagencies.model.backend.DSManager;
 import com.example.java5777.travelagencies.model.backend.DSManagerFactory;
+import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract;
+import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract.HasBeenUpdatedEntry;
 
 /**
  * A class that implements a service that will check every
@@ -20,7 +23,13 @@ import com.example.java5777.travelagencies.model.backend.DSManagerFactory;
 public class CheckUpdatesService extends Service {
     private static final String TAG = "CheckUpdatesService";
     private final static int INTERVAL = 10;
+
     private final static String ACTION = "ACTION_UPDATE";
+    private final static String EXTRA = "EXTRA";
+
+    private final static String USER_EXTRA = "USER_EXTRA";
+    private final static String AGENCY_EXTRA = "AGENCY_EXTRA";
+    private final static String TRIP_EXTRA = "TRIP_EXTRA";
 
     private boolean isRunning = false;
     private DSManager manager;
@@ -33,8 +42,6 @@ public class CheckUpdatesService extends Service {
      */
     @Override
     public void onCreate() {
-        Log.i(TAG, "Service onCreate");
-
         manager = DSManagerFactory.getDSManager(DSManagerFactory.LIST); // initiate manager
         isRunning = true;
     }
@@ -50,8 +57,6 @@ public class CheckUpdatesService extends Service {
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG, "Service onStartCommand");
-
         // creating new async task to
         // check for update in background
         new AsyncTask<Void, Void, Void>() {
@@ -60,14 +65,35 @@ public class CheckUpdatesService extends Service {
                 while (isRunning) {
                     try {
                         Thread.sleep(INTERVAL * 1000);
-                        //if (manager.hasBeenUpdated()) {
 
-                            // construct intent and send broadcast
-                        Intent intent = new Intent();
-                        intent.setAction(ACTION);
-                        intent.putExtra("yonah", "mann");
-                        sendBroadcast(intent);
-                        //}
+                        // check if any updates happened
+                        // and broadcast them
+
+                        Intent intent = null;
+
+                        // get has been updated
+                        Cursor current = getContentResolver().query(HasBeenUpdatedEntry.CONTENT_URI, null, null, null, null);
+
+                        if (userUpdated(current)) {
+                            intent = new Intent(ACTION);
+                            intent.putExtra(EXTRA, USER_EXTRA);
+                            sendBroadcast( intent );
+                        }
+
+
+                        if (agencyUpdated(current)) {
+                            intent = new Intent(ACTION);
+                            intent.putExtra(EXTRA, AGENCY_EXTRA);
+                            sendBroadcast( intent );
+                        }
+
+                        if (tripUpdated(current)) {
+                            intent = new Intent(ACTION);
+                            intent.putExtra(EXTRA, TRIP_EXTRA);
+                            sendBroadcast( intent );
+                        }
+
+
                     }
                     catch (InterruptedException e) {
                         e.printStackTrace();
@@ -88,7 +114,6 @@ public class CheckUpdatesService extends Service {
      */
     @Override
     public IBinder onBind(Intent arg0) {
-        Log.i(TAG, "Service onBind");
         return null;
     }
 
@@ -98,7 +123,20 @@ public class CheckUpdatesService extends Service {
     @Override
     public void onDestroy() {
         isRunning = false;
+    }
 
-        Log.i(TAG, "Service onDestroy");
+
+    // helpful methods
+
+    private boolean userUpdated(Cursor c) {
+        return HasBeenUpdatedEntry.UserHasBeenUpdated( c );
+    }
+
+    private boolean agencyUpdated(Cursor c) {
+        return HasBeenUpdatedEntry.AgencyHasBeenUpdated( c );
+    }
+
+    private boolean tripUpdated(Cursor c) {
+        return HasBeenUpdatedEntry.TripHasBeenUpdated( c );
     }
 }

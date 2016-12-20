@@ -65,6 +65,45 @@ public final class TravelAgenciesContract {
     public static final String PATH_AGENCY = "agency";
     public static final String PATH_USER = "user";
     public static final String PATH_TRIP = "trip";
+    public static final String PATH_HASBEENUPDATED = "hasbeenupdated";
+
+
+    /**
+     * A class containing data needed to access the path for
+     * HasBeenUpdated in content provider. Once cursor has been
+     * returned, you may use the methods here to help you
+     * seek the data you need from it.
+     */
+    public static final class HasBeenUpdatedEntry implements BaseColumns {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_HASBEENUPDATED).build();
+
+        public static final String COLUMN_USER = "user";
+        public static final String COLUMN_AGENCY = "agency";
+        public static final String COLUMN_TRIP = "trip";
+
+        public static final String[] COLUMNS = {
+                COLUMN_USER,
+                COLUMN_AGENCY,
+                COLUMN_TRIP
+        };
+
+        // Methods to help out once cursor has been returned
+
+        public static boolean UserHasBeenUpdated(Cursor cur) {
+            cur.moveToFirst(); // move cursor to start
+            return cur.getInt( cur.getColumnIndex( HasBeenUpdatedEntry.COLUMN_USER ) ) > 0;
+        }
+
+        public static boolean AgencyHasBeenUpdated(Cursor cur) {
+            cur.moveToFirst(); // move cursor to beggining
+            return cur.getInt( cur.getColumnIndex( HasBeenUpdatedEntry.COLUMN_AGENCY ) ) > 0;
+        }
+
+        public static boolean TripHasBeenUpdated(Cursor cur) {
+            cur.moveToFirst(); // move cursor to start
+            return cur.getInt( cur.getColumnIndex( HasBeenUpdatedEntry.COLUMN_TRIP ) ) > 0;
+        }
+    }
 
     /**
      * A class containing data used to access

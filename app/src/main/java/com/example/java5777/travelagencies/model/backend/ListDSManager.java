@@ -21,12 +21,14 @@ import com.example.java5777.travelagencies.model.entities.User;
 import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract.AgencyEntry;
 import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract.TripEntry;
 import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract.UserEntry;
+import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract.HasBeenUpdatedEntry;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * A class implementing the data
@@ -44,11 +46,16 @@ public class ListDSManager implements DSManager {
         try {
             // get data
             long ID = (long) userData.get(TravelAgenciesContract.UserEntry.COLUMN_ID);
-            String username = (String) userData.get(User.USERNAME_VALUE);
-            String password = (String) userData.get(User.PASSWORD_VALUE);
+            String username = (String) userData.get(UserEntry.COLUMN_USERNAME);
+            String password = (String) userData.get(UserEntry.COLUMN_PASSWORD);
+
+            // make sure user doesn't already exist
+            if (user_exists(username))
+                return false;
 
             // insert data
             ListDS.insertUser(new User(ID, username, new Password(password)));
+            userHasBeenUpdated = true;
         }
         catch (Exception e) {
             return false;
@@ -70,9 +77,13 @@ public class ListDSManager implements DSManager {
             String street = (String) agencyData.get(AgencyEntry.COLUMN_STREET);
             String website = (String) agencyData.get(AgencyEntry.COLUMN_WEBSITE);
 
+            // check if agency already exists
+            if (agency_exists(ID))
+                return false;
+
             // insert data
             ListDS.insertAgency(new Agency(ID, name, email, phoneNumber, new Address(country, city, street), website));
-
+            agencyHasBeenUpdated = true;
         }
         catch (Exception e) {
             return false;
@@ -100,6 +111,7 @@ public class ListDSManager implements DSManager {
 
             // insert data
             ListDS.insertTrip(new Trip(tripType, country, start, end, price, description, agencyID));
+            tripHasBeenUpdated = true;
         }
         catch (Exception e) {
             return false;
@@ -188,20 +200,62 @@ public class ListDSManager implements DSManager {
 
     // Check if data source has been updated operation
 
-    /**
-     * Variable that whenever an update occurs, the
-     * method that updated it must change variable
-     * to true. Method hasBeenUpdated uses variable
-     * to check it's condition.
-     */
-    private boolean dsHasBeenUpdated = false;
+    // variables used to check if ds has been updated
 
-    // @// TODO: 12/5/2016 TEST HASBEENUPDATED METHOD 
-    
+    private boolean userHasBeenUpdated = false;
+    private boolean agencyHasBeenUpdated = false;
+    private boolean tripHasBeenUpdated = false;
+
+    /**
+     * A method to check if DS has
+     * been updated.
+     * @return A cursor with information about DS change.
+     * @see TravelAgenciesContract for what cursor will contain.
+     */
     @Override
-    public boolean hasBeenUpdated() {
-        boolean tmp = dsHasBeenUpdated; // hold onto old data
-        dsHasBeenUpdated = false; // update for next check
-        return tmp;
+    public Cursor hasBeenUpdated() {
+        MatrixCursor cur = new MatrixCursor(HasBeenUpdatedEntry.COLUMNS);
+
+        // build result row
+        ArrayList<Integer> results = new ArrayList<>();
+
+        // foreach table (users, agencies, trips) if
+        // table has been modified insert it into results
+        // and set has been updated flag to false
+        if (userHasBeenUpdated) {
+            userHasBeenUpdated = false;
+            results.add(1);
+        }
+        else results.add(0);
+
+        if (agencyHasBeenUpdated) {
+            agencyHasBeenUpdated = false;
+            results.add(1);
+        }
+        else results.add(0);
+        if (tripHasBeenUpdated) {
+            tripHasBeenUpdated = false;
+            results.add(1);
+        }
+        else results.add(0);
+
+        cur.addRow(results);
+        return cur;
+    }
+
+    // helpful methods
+
+    private static boolean user_exists(String username) {
+        for (User u : ListDS.cloneUserArrayList())
+            if (u.getUsername() == username)
+                return true;
+        return false;
+    }
+
+    private static boolean agency_exists(long ID) {
+        for (Agency a : ListDS.cloneAgencyArrayList())
+            if (a.getID() == ID)
+                return true;
+        return false;
     }
 }
