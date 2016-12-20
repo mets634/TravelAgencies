@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     public void addUserButtonOnClick(View v) {
         user += "A";
         Uri res = getContentResolver().insert(UserEntry.CONTENT_URI, UserEntry.createContentValues(1, user, "password"));
-        if (ContentUris.parseId(res) != 1)
+        if (ContentUris.parseId(res) != TravelAgenciesContract.CODE_SUCCESS)
             Toast.makeText(this, "Failed To Create New User", Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(this, "Added New User " + user, Toast.LENGTH_SHORT).show();
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         Uri res = getContentResolver().insert(
                 AgencyEntry.CONTENT_URI, AgencyEntry.createContentValues(id++, "name", "country", "city", "street", "100", "y@gmail.com", "website.com")
         );
-        if (ContentUris.parseId(res) != 1)
+        if (ContentUris.parseId(res) != TravelAgenciesContract.CODE_SUCCESS)
             Toast.makeText(this, "Failed To Create New Agency", Toast.LENGTH_SHORT);
         else
             Toast.makeText(this, "Added New Agency " + id.toString() , Toast.LENGTH_SHORT).show();
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         Uri res = getContentResolver().insert(
                 TripEntry.CONTENT_URI, TripEntry.createContentValues(TripType.Airline, "country", gc, gc2, 1234, "description", 0)
         );
-        if (ContentUris.parseId(res) != 1)
+        if (ContentUris.parseId(res) != TravelAgenciesContract.CODE_SUCCESS)
             Toast.makeText(this, "Failed To Create New Trip", Toast.LENGTH_SHORT);
         else
             Toast.makeText(this, "Added New Trip ", Toast.LENGTH_SHORT).show();

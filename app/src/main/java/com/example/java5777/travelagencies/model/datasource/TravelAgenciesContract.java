@@ -67,6 +67,13 @@ public final class TravelAgenciesContract {
     public static final String PATH_TRIP = "trip";
     public static final String PATH_HASBEENUPDATED = "hasbeenupdated";
 
+    public static final int CODE_SUCCESS = 0;
+    public static final int CODE_ERROR = 1; // general unknown error
+    public static final int CODE_USER_EXISTS = 2;
+    public static final int CODE_AGENCY_EXISTS = 3;
+
+
+
 
     /**
      * A class containing data needed to access the path for

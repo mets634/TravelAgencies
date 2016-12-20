@@ -81,19 +81,16 @@ public class TravelAgenciesProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         switch(sUriMatcher.match(uri)) {
             case AGENCY_URI_ID:
-                if ( manager.InsertAgency(values) )
-                    return ContentUris.withAppendedId(TravelAgenciesContract.AgencyEntry.CONTENT_URI, 1);
-                return ContentUris.withAppendedId(TravelAgenciesContract.AgencyEntry.CONTENT_URI, 0);
+                int code = manager.InsertAgency(values);
+                return ContentUris.withAppendedId(TravelAgenciesContract.AgencyEntry.CONTENT_URI, code);
 
             case TRIP_URI_ID:
-                if ( manager.InsertTrip(values) )
-                    return ContentUris.withAppendedId(TravelAgenciesContract.TripEntry.CONTENT_URI, 1);
-                return ContentUris.withAppendedId(TravelAgenciesContract.TripEntry.CONTENT_URI, 0);
+                code = manager.InsertTrip(values);
+                return ContentUris.withAppendedId(TravelAgenciesContract.TripEntry.CONTENT_URI, code);
 
             case USER_URI_ID:
-                if ( manager.InsertUser(values) )
-                    return ContentUris.withAppendedId(TravelAgenciesContract.UserEntry.CONTENT_URI, 1);
-                return ContentUris.withAppendedId(TravelAgenciesContract.UserEntry.CONTENT_URI, 0);
+                code = manager.InsertUser(values);
+                return ContentUris.withAppendedId(TravelAgenciesContract.UserEntry.CONTENT_URI, code);
 
             default:
                 throw new IllegalArgumentException("Unrecognized Insertion-Table");

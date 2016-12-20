@@ -42,7 +42,7 @@ public class ListDSManager implements DSManager {
     // Insertion operations
 
     @Override
-    public boolean InsertUser(ContentValues userData) {
+    public int InsertUser(ContentValues userData) {
         try {
             // get data
             long ID = (long) userData.get(TravelAgenciesContract.UserEntry.COLUMN_ID);
@@ -51,21 +51,21 @@ public class ListDSManager implements DSManager {
 
             // make sure user doesn't already exist
             if (user_exists(username))
-                return false;
+                return TravelAgenciesContract.CODE_USER_EXISTS;
 
             // insert data
             ListDS.insertUser(new User(ID, username, new Password(password)));
             userHasBeenUpdated = true;
         }
         catch (Exception e) {
-            return false;
+            return TravelAgenciesContract.CODE_ERROR;
         }
 
-        return true;
+        return TravelAgenciesContract.CODE_SUCCESS;
     }
 
     @Override
-    public boolean InsertAgency(ContentValues agencyData) {
+    public int InsertAgency(ContentValues agencyData) {
         try {
             // get data
             long ID = (long) agencyData.get(AgencyEntry.COLUMN_ID);
@@ -79,21 +79,21 @@ public class ListDSManager implements DSManager {
 
             // check if agency already exists
             if (agency_exists(ID))
-                return false;
+                return TravelAgenciesContract.CODE_AGENCY_EXISTS;
 
             // insert data
             ListDS.insertAgency(new Agency(ID, name, email, phoneNumber, new Address(country, city, street), website));
             agencyHasBeenUpdated = true;
         }
         catch (Exception e) {
-            return false;
+            return TravelAgenciesContract.CODE_ERROR;
         }
 
-        return true;
+        return TravelAgenciesContract.CODE_SUCCESS;
     }
 
     @Override
-    public boolean InsertTrip(ContentValues tripData) {
+    public int InsertTrip(ContentValues tripData) {
         try {
             // get data
             TripType tripType = TripType.valueOf( (String) tripData.get( TripEntry.COLUMN_TYPE ) );
@@ -114,10 +114,10 @@ public class ListDSManager implements DSManager {
             tripHasBeenUpdated = true;
         }
         catch (Exception e) {
-            return false;
+            return TravelAgenciesContract.CODE_ERROR;
         }
 
-        return true;
+        return TravelAgenciesContract.CODE_SUCCESS;
     }
 
 
