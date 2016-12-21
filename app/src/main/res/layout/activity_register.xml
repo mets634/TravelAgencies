@@ -13,24 +13,26 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Username"
+        android:ems="10"
+        android:layout_marginTop="49dp"
+        android:id="@+id/username"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
         android:layout_below="@+id/username"
         android:layout_alignRight="@+id/username"
         android:layout_alignEnd="@+id/username"
         android:layout_marginTop="24dp"
-        android:id="@+id/password" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Username"
-        android:ems="10"
-        android:layout_marginTop="49dp"
-        android:id="@+id/username"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/password"
+        android:hint="Password"/>
 
     <CheckBox
         android:text="Remember Me"

@@ -150,7 +150,7 @@ public class ListDSManager implements DSManager {
             }
         }
 
-        return null;
+        return cursor;
     }
 
     @Override

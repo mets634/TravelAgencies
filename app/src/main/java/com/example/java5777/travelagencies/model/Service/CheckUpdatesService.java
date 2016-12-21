@@ -8,7 +8,6 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.java5777.travelagencies.controller.MainActivity;
 import com.example.java5777.travelagencies.model.backend.DSManager;
 import com.example.java5777.travelagencies.model.backend.DSManagerFactory;
 import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract;

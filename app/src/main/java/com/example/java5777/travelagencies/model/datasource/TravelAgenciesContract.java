@@ -67,6 +67,9 @@ public final class TravelAgenciesContract {
     public static final String PATH_TRIP = "trip";
     public static final String PATH_HASBEENUPDATED = "hasbeenupdated";
 
+
+    // codes returned by content provider
+
     public static final int CODE_SUCCESS = 0;
     public static final int CODE_ERROR = 10; // general unknown error
     public static final int CODE_USER_EXISTS = 20;
