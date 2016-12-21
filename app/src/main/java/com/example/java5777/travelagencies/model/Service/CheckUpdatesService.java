@@ -2,21 +2,34 @@ package com.example.java5777.travelagencies.model.Service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.java5777.travelagencies.controller.MainActivity;
 import com.example.java5777.travelagencies.model.backend.DSManager;
 import com.example.java5777.travelagencies.model.backend.DSManagerFactory;
+import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract;
+import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract.HasBeenUpdatedEntry;
 
 /**
  * A class that implements a service that will check every
  * 'interval' number of seconds whether there has been a
  * change in the data source.
+ * @// TODO: 12/6/2016 CHANGE ACCESS FROM USING DATABASE TO USING CONTENT PROVIDER. 
  */
 public class CheckUpdatesService extends Service {
     private static final String TAG = "CheckUpdatesService";
-    private static int INTERVAL = 10;
-    private static String ACTION = "ACTION_UPDATE";
+    private final static int INTERVAL = 10;
+
+    private final static String ACTION = "ACTION_UPDATE";
+    private final static String EXTRA = "EXTRA";
+
+    private final static String USER_EXTRA = "USER_EXTRA";
+    private final static String AGENCY_EXTRA = "AGENCY_EXTRA";
+    private final static String TRIP_EXTRA = "TRIP_EXTRA";
 
     private boolean isRunning = false;
     private DSManager manager;
@@ -29,8 +42,6 @@ public class CheckUpdatesService extends Service {
      */
     @Override
     public void onCreate() {
-        Log.i(TAG, "Service onCreate");
-
         manager = DSManagerFactory.getDSManager(DSManagerFactory.LIST); // initiate manager
         isRunning = true;
     }
@@ -43,37 +54,55 @@ public class CheckUpdatesService extends Service {
      * @param flags
      * @param startId
      * @return
-     * @// TODO: 12/4/2016 MAKE SURE THIS IS WHAT THE TEACHER WANTS. 
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG, "Service onStartCommand");
-
-        // creating new thread for service
-        new Thread(new Runnable() {
+        // creating new async task to
+        // check for update in background
+        new AsyncTask<Void, Void, Void>() {
             @Override
-            public void run() {
+            protected Void doInBackground(Void... params) {
                 while (isRunning) {
                     try {
                         Thread.sleep(INTERVAL * 1000);
-                        if (manager.hasBeenUpdated()) {
-                            
-                            // construct intent and start new activity
-                            Intent intent = new Intent();
-                            intent.setAction(ACTION);
-                            startActivity(intent);
+
+                        // check if any updates happened
+                        // and broadcast them
+
+                        Intent intent = null;
+
+                        // get has been updated
+                        Cursor current = getContentResolver().query(HasBeenUpdatedEntry.CONTENT_URI, null, null, null, null);
+
+                        if (userUpdated(current)) {
+                            intent = new Intent(ACTION);
+                            intent.putExtra(EXTRA, USER_EXTRA);
+                            sendBroadcast( intent );
                         }
+
+
+                        if (agencyUpdated(current)) {
+                            intent = new Intent(ACTION);
+                            intent.putExtra(EXTRA, AGENCY_EXTRA);
+                            sendBroadcast( intent );
+                        }
+
+                        if (tripUpdated(current)) {
+                            intent = new Intent(ACTION);
+                            intent.putExtra(EXTRA, TRIP_EXTRA);
+                            sendBroadcast( intent );
+                        }
+
+
                     }
                     catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
                 }
-
-                // stop service once it finishes its task
                 stopSelf();
+                return null;
             }
-        }).start();
+        }.execute();
 
         return Service.START_STICKY;
     }
@@ -85,7 +114,6 @@ public class CheckUpdatesService extends Service {
      */
     @Override
     public IBinder onBind(Intent arg0) {
-        Log.i(TAG, "Service onBind");
         return null;
     }
 
@@ -95,7 +123,20 @@ public class CheckUpdatesService extends Service {
     @Override
     public void onDestroy() {
         isRunning = false;
+    }
 
-        Log.i(TAG, "Service onDestroy");
+
+    // helpful methods
+
+    private boolean userUpdated(Cursor c) {
+        return HasBeenUpdatedEntry.UserHasBeenUpdated( c );
+    }
+
+    private boolean agencyUpdated(Cursor c) {
+        return HasBeenUpdatedEntry.AgencyHasBeenUpdated( c );
+    }
+
+    private boolean tripUpdated(Cursor c) {
+        return HasBeenUpdatedEntry.TripHasBeenUpdated( c );
     }
 }

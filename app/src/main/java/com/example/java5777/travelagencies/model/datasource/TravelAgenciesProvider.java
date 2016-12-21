@@ -27,6 +27,7 @@ public class TravelAgenciesProvider extends ContentProvider {
     private final static int AGENCY_URI_ID = 1;
     private final static int USER_URI_ID = 2;
     private final static int TRIP_URI_ID = 3;
+    private final static int HASBEENUPDATED_URI_ID = 4;
 
     private static DSManager manager = DSManagerFactory.getDSManager(DSManagerFactory.LIST);
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -36,6 +37,7 @@ public class TravelAgenciesProvider extends ContentProvider {
         sUriMatcher.addURI(TravelAgenciesContract.CONTENT_AUTHORITY, TravelAgenciesContract.PATH_AGENCY, AGENCY_URI_ID);
         sUriMatcher.addURI(TravelAgenciesContract.CONTENT_AUTHORITY, TravelAgenciesContract.PATH_USER, USER_URI_ID);
         sUriMatcher.addURI(TravelAgenciesContract.CONTENT_AUTHORITY, TravelAgenciesContract.PATH_TRIP, TRIP_URI_ID);
+        sUriMatcher.addURI(TravelAgenciesContract.CONTENT_AUTHORITY, TravelAgenciesContract.PATH_HASBEENUPDATED, HASBEENUPDATED_URI_ID);
     }
 
 
@@ -60,6 +62,9 @@ public class TravelAgenciesProvider extends ContentProvider {
                     return null;
                 return manager.getUsers(selectionArgs[0], selectionArgs[1]);
 
+            case HASBEENUPDATED_URI_ID:
+                return manager.hasBeenUpdated();
+
             default:
                 throw new IllegalArgumentException("Unrecognized Query-Table");
         }
@@ -76,19 +81,16 @@ public class TravelAgenciesProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         switch(sUriMatcher.match(uri)) {
             case AGENCY_URI_ID:
-                if ( manager.InsertAgency(values) )
-                    return ContentUris.withAppendedId(TravelAgenciesContract.AgencyEntry.CONTENT_URI, 1);
-                return ContentUris.withAppendedId(TravelAgenciesContract.AgencyEntry.CONTENT_URI, 0);
+                int code = manager.InsertAgency(values);
+                return ContentUris.withAppendedId(TravelAgenciesContract.AgencyEntry.CONTENT_URI, code);
 
             case TRIP_URI_ID:
-                if ( manager.InsertTrip(values) )
-                    return ContentUris.withAppendedId(TravelAgenciesContract.TripEntry.CONTENT_URI, 1);
-                return ContentUris.withAppendedId(TravelAgenciesContract.TripEntry.CONTENT_URI, 0);
+                code = manager.InsertTrip(values);
+                return ContentUris.withAppendedId(TravelAgenciesContract.TripEntry.CONTENT_URI, code);
 
             case USER_URI_ID:
-                if ( manager.InsertUser(values) )
-                    return ContentUris.withAppendedId(TravelAgenciesContract.UserEntry.CONTENT_URI, 1);
-                return ContentUris.withAppendedId(TravelAgenciesContract.UserEntry.CONTENT_URI, 0);
+                code = manager.InsertUser(values);
+                return ContentUris.withAppendedId(TravelAgenciesContract.UserEntry.CONTENT_URI, code);
 
             default:
                 throw new IllegalArgumentException("Unrecognized Insertion-Table");

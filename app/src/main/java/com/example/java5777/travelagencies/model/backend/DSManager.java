@@ -22,7 +22,7 @@ public interface DSManager {
      * @param userData A content value with all the required information.
      * @return Whether operation succeeded.
      */
-    boolean InsertUser(ContentValues userData);
+    int InsertUser(ContentValues userData);
 
     /**
      * Attempts to insert a new agency
@@ -30,7 +30,7 @@ public interface DSManager {
      * @param agencyData A content value with all the required information.
      * @return Whether operation succeeded.
      */
-    boolean InsertAgency(ContentValues agencyData);
+    int InsertAgency(ContentValues agencyData);
 
     /**
      * Attempts to insert a new trip
@@ -38,7 +38,7 @@ public interface DSManager {
      * @param tripData A content value with all the required information.
      * @return Whether operation succeeded.
      */
-    boolean InsertTrip(ContentValues tripData);
+    int InsertTrip(ContentValues tripData);
 
     // Get data cursor methods
 
@@ -62,7 +62,7 @@ public interface DSManager {
      * A method that checks whether
      * data source has been updated
      * since last check.
-     * @return True if data source has been updated.
+     * @return A cursor if has been updated, otherwise null.
      */
-    boolean hasBeenUpdated();
+    Cursor hasBeenUpdated();
 }
