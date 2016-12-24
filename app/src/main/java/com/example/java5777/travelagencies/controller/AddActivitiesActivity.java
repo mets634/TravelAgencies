@@ -77,9 +77,14 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
         insertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                insertActivity();
-                Intent intent = new Intent(AddActivitiesActivity.this, MainOptionsActivity.class);
-                startActivity(intent);
+                if (validData()) {
+                    insertActivity();
+                    Intent intent = new Intent(AddActivitiesActivity.this, MainOptionsActivity.class);
+                    startActivity(intent);
+                }
+                else {
+
+                }
             }
         });
     }
@@ -202,6 +207,11 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
                 return getContentResolver().insert(TravelAgenciesContract.TripEntry.CONTENT_URI, val);
             }
         }.execute();
+    }
+
+    protected boolean validData() {
+        //TODO: finish this function!!!
+        return ((tripType!=null) && (country.getText().toString()!=""));
     }
 }
 
