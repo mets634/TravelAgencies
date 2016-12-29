@@ -1,180 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_add_activities"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.java5777.travelagencies.controller.AddActivitiesActivity">
+    android:fillViewport="true">
 
-    <TextView
-        android:text="Trip Type:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView1" />
-
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tableRow1"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textView1"
-        android:layout_toEndOf="@+id/textView1"
-        android:layout_marginLeft="23dp"
-        android:layout_marginStart="23dp">
-
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tripTypeSpinner"
-            android:alwaysDrawnWithCache="false" />
-
-    </TableRow>
-
-    <TextView
-        android:text="Country:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:layout_alignBaseline="@+id/country"
-        android:layout_alignBottom="@+id/country"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="text|textPersonName"
-        android:ems="10"
-        android:id="@+id/country"
-        android:hint="Complete this Field"
-        android:layout_below="@+id/tableRow1"
-        android:layout_alignLeft="@+id/tableRow1"
-        android:layout_alignStart="@+id/tableRow1"
-        android:layout_marginTop="10dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/startDate"
-        android:drawableRight="@android:drawable/ic_menu_my_calendar"
-        android:layout_below="@+id/textView2"
-        android:layout_alignLeft="@+id/country"
-        android:layout_alignStart="@+id/country"
-        android:hint="Choose..." />
-
-    <TextView
-        android:text="Start Date:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        android:layout_alignBaseline="@+id/startDate"
-        android:layout_alignBottom="@+id/startDate"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/endDate"
-        android:drawableRight="@android:drawable/ic_menu_my_calendar"
-        android:hint="Choose..."
-        android:layout_below="@+id/textView3"
-        android:layout_alignLeft="@+id/startDate"
-        android:layout_alignStart="@+id/startDate" />
-
-    <TextView
-        android:text="End Date:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView4"
-        android:layout_alignBaseline="@+id/endDate"
-        android:layout_alignBottom="@+id/endDate"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:text="Price (NIS):"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView5"
-        android:layout_alignBaseline="@+id/price"
-        android:layout_alignBottom="@+id/price"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:ems="10"
-        android:id="@+id/price"
-        android:hint="Complete this Field"
-        android:layout_below="@+id/textView4"
-        android:layout_alignLeft="@+id/endDate"
-        android:layout_alignStart="@+id/endDate" />
-
-
-    <TextView
-        android:text="Business ID:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView6"
-        android:layout_alignBaseline="@+id/businessID"
-        android:layout_alignBottom="@+id/businessID"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:ems="10"
-        android:id="@+id/businessID"
-        android:hint="Complete this Field"
-        android:layout_below="@+id/tableRow2"
-        android:layout_alignLeft="@+id/price"
-        android:layout_alignStart="@+id/price"
-        android:layout_marginTop="12dp"/>
-
-    <Button
-        android:text="Insert Activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/insertButton"
-        android:layout_below="@+id/businessID"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"/>
-
-    <TableRow
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_add_activities"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tableRow2"
-        android:layout_below="@+id/price"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="12dp">
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.example.java5777.travelagencies.controller.AddActivitiesActivity">
+
+        <TextView
+            android:text="Trip Type:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/textView1" />
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tableRow1"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView1"
+            android:layout_toEndOf="@+id/textView1"
+            android:layout_marginLeft="23dp"
+            android:layout_marginStart="23dp">
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tripTypeSpinner"
+                android:alwaysDrawnWithCache="false" />
+
+        </TableRow>
+
+        <TextView
+            android:text="Country:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:layout_alignBaseline="@+id/country"
+            android:layout_alignBottom="@+id/country"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="text|textPersonName"
+            android:ems="10"
+            android:id="@+id/country"
+            android:hint="Complete this Field"
+            android:layout_below="@+id/tableRow1"
+            android:layout_alignLeft="@+id/tableRow1"
+            android:layout_alignStart="@+id/tableRow1"
+            android:layout_marginTop="10dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/startDate"
+            android:drawableRight="@android:drawable/ic_menu_my_calendar"
+            android:layout_below="@+id/textView2"
+            android:layout_alignLeft="@+id/country"
+            android:layout_alignStart="@+id/country"
+            android:hint="Choose..." />
+
+        <TextView
+            android:text="Start Date:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView3"
+            android:layout_alignBaseline="@+id/startDate"
+            android:layout_alignBottom="@+id/startDate"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/endDate"
+            android:drawableRight="@android:drawable/ic_menu_my_calendar"
+            android:hint="Choose..."
+            android:layout_below="@+id/textView3"
+            android:layout_alignLeft="@+id/startDate"
+            android:layout_alignStart="@+id/startDate" />
+
+        <TextView
+            android:text="End Date:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView4"
+            android:layout_alignBaseline="@+id/endDate"
+            android:layout_alignBottom="@+id/endDate"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Price (NIS):"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView5"
+            android:layout_alignBaseline="@+id/price"
+            android:layout_alignBottom="@+id/price"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/price"
+            android:hint="Complete this Field"
+            android:layout_below="@+id/textView4"
+            android:layout_alignLeft="@+id/endDate"
+            android:layout_alignStart="@+id/endDate" />
+
+
+        <TextView
+            android:text="Business ID:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView6"
+            android:layout_alignBaseline="@+id/businessID"
+            android:layout_alignBottom="@+id/businessID"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/businessID"
+            android:hint="Complete this Field"
+            android:layout_below="@+id/tableRow2"
+            android:layout_alignLeft="@+id/price"
+            android:layout_alignStart="@+id/price"
+            android:layout_marginTop="12dp"/>
+
+        <Button
+            android:text="Insert Activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/insertButton"
+            android:layout_below="@+id/businessID"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"/>
+
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:lines="5"
-            android:id="@+id/description"
-            android:hint="General Description..." />
-    </TableRow>
+            android:id="@+id/tableRow2"
+            android:layout_below="@+id/price"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="12dp">
 
-</RelativeLayout>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:lines="5"
+                android:id="@+id/description"
+                android:hint="General Description..." />
+        </TableRow>
 
+    </RelativeLayout>
+
+</ScrollView>
