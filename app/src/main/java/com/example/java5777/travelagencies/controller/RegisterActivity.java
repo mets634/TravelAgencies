@@ -15,34 +15,31 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.example.java5777.travelagencies.R;
+import com.example.java5777.travelagencies.model.SharedPreferences.MySharedPreferences;
 import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract;
 
 public class RegisterActivity extends AppCompatActivity {
-
+    // view components
     public EditText username;
     public EditText password;
     public CheckBox rememberMeBox;
     public Button registerButton;
 
-    private SharedPreferences prefs;
-    private SharedPreferences.Editor prefsEditor;
+    private MySharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        // initialize view components
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         rememberMeBox = (CheckBox) findViewById(R.id.rememberMeBox);
         registerButton = (Button) findViewById(R.id.registerButton);
 
-        Bundle bundle = getIntent().getExtras();
-        username.setText(bundle.getString("username"));
-        password.setText(bundle.getString("password"));
-
-        prefs = getSharedPreferences("UsersInfo", 0);
-        prefsEditor = prefs.edit();
+        // initialize shared preferences
+        prefs = new MySharedPreferences(this);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,9 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         if (rememberMeBox.isChecked()) {
-            prefsEditor.putString("username", username.getText().toString());
-            prefsEditor.putString("password", password.getText().toString());
-            prefsEditor.commit();
+            // @// TODO: 12/30/2016 ADD TO SHARED PREFERENCES. 
         }
         Intent intent = new Intent(RegisterActivity.this, MainOptionsActivity.class);
         startActivity(intent);

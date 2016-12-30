@@ -43,7 +43,8 @@
         android:layout_alignBaseline="@+id/registerButton"
         android:layout_alignBottom="@+id/registerButton"
         android:layout_alignRight="@+id/password"
-        android:layout_alignEnd="@+id/password" />
+        android:layout_alignEnd="@+id/password"
+        android:onClick="ClearButtonOnClick"/>
 
     <Button
         android:text="Register"
@@ -53,7 +54,8 @@
         android:layout_marginTop="13dp"
         android:layout_below="@+id/loginButton"
         android:layout_toLeftOf="@+id/clearButton"
-        android:layout_toStartOf="@+id/clearButton" />
+        android:layout_toStartOf="@+id/clearButton"
+        android:onClick="RegisterButtonOnClick"/>
 
     <Button
         android:text="Login"
@@ -62,7 +64,8 @@
         android:id="@+id/loginButton"
         android:layout_marginTop="41dp"
         android:layout_below="@+id/rememberMeBox"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="LoginButtonOnClick"/>
 
     <CheckBox
         android:text="Remember Me"
