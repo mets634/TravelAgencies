@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -77,13 +78,16 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
         insertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                insertActivity();
-                Intent intent = new Intent(AddActivitiesActivity.this, MainOptionsActivity.class);
-                startActivity(intent);
+                if (validData()) {
+                    insertActivity();
+                    Intent intent = new Intent(AddActivitiesActivity.this, MainOptionsActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
 
+    //setting the trip type spinner
     protected void setTripTypeSpinner() {
         tripTypeSpinner.setOnItemSelectedListener(this);
 
@@ -104,7 +108,6 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
         // attaching data adapter to spinner
         tripTypeSpinner.setAdapter(dataAdapter);
     }
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
@@ -121,11 +124,11 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
     public void onNothingSelected(AdapterView<?> arg0) {
         setTripType(null);
     }
-
     protected void setTripType (TripType t) {
         tripType = t;
     }
 
+    //setting the date pick dialog for both dates
     protected void showDatePickDialog(final EditText date, final GregorianCalendar realDate) {
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(AddActivitiesActivity.this);
@@ -151,7 +154,6 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
-
     protected void writeDateFromDatePicker(DatePicker datePicker, EditText date, GregorianCalendar realDate){
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
@@ -165,7 +167,6 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         date.setText(sdf.format(calendar.getTime()));
     }
-
     protected void setDateDrawableRightOnClick(final EditText date, final GregorianCalendar realDate) {
         date.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -186,6 +187,7 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
         });
     }
 
+    //insert activity - async task
     protected void insertActivity() {
         //get the values of the view grids and parse them if needed
         final String cntry = country.getText().toString();
@@ -202,6 +204,49 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
                 return getContentResolver().insert(TravelAgenciesContract.TripEntry.CONTENT_URI, val);
             }
         }.execute();
+    }
+
+    //validation of the data
+    protected boolean validData() {
+        return (checkTripType() && checkCountry() && checkDates() && checkPrice() && checkDescription() && checkBusinessID());
+    }
+    protected boolean checkTripType() {
+        if (tripType == null) {
+            TextView text = (TextView) findViewById(R.id.textView1);
+            text.setTextColor(Color.RED);
+            return false;
+        }
+        return true;
+    }
+    protected boolean checkCountry() {
+        if (country.getText().toString() == "") {
+            TextView text = (TextView) findViewById(R.id.textView2);
+            text.setTextColor(Color.RED);
+            return false;
+        }
+        return true;
+    }
+    protected boolean checkDates() {
+        return true;
+    }
+    protected boolean checkPrice() {
+        if (price.getText().toString() == "") {
+            TextView text = (TextView) findViewById(R.id.textView5);
+            text.setTextColor(Color.RED);
+            return false;
+        }
+        return true;
+    }
+    protected boolean checkDescription() {
+        return true;
+    }
+    protected boolean checkBusinessID() {
+        if (businessID.getText().toString() == "") {
+            TextView text = (TextView) findViewById(R.id.textView6);
+            text.setTextColor(Color.RED);
+            return false;
+        }
+        return true;
     }
 }
 
