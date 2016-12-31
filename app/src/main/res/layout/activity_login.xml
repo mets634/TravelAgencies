@@ -44,7 +44,7 @@
         android:layout_alignBottom="@+id/registerButton"
         android:layout_alignRight="@+id/password"
         android:layout_alignEnd="@+id/password"
-        android:onClick="ClearButtonOnClick"/>
+        android:onClick="clearButtonOnClick"/>
 
     <Button
         android:text="Register"
@@ -55,7 +55,7 @@
         android:layout_below="@+id/loginButton"
         android:layout_toLeftOf="@+id/clearButton"
         android:layout_toStartOf="@+id/clearButton"
-        android:onClick="RegisterButtonOnClick"/>
+        android:onClick="registerButtonOnClick"/>
 
     <Button
         android:text="Login"
@@ -65,7 +65,7 @@
         android:layout_marginTop="41dp"
         android:layout_below="@+id/rememberMeBox"
         android:layout_centerHorizontal="true"
-        android:onClick="LoginButtonOnClick"/>
+        android:onClick="loginButtonOnClick"/>
 
     <CheckBox
         android:text="Remember Me"

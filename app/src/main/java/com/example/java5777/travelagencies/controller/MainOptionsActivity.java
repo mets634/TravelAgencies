@@ -2,6 +2,7 @@ package com.example.java5777.travelagencies.controller;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,54 +16,50 @@ import android.widget.EditText;
 
 import com.example.java5777.travelagencies.R;
 import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract;
+import com.example.java5777.travelagencies.model.entities.TripType;
+
+import java.util.GregorianCalendar;
 
 public class MainOptionsActivity extends AppCompatActivity {
+    // view components
+    private Button addBusinessButton;
+    private Button addActivityButton;
 
-    Button addBusinessButton;
-    Button addActivityButton;
-    Button serviceButton;
-
+    /**
+     * Implementation of onCreate method.
+     * Initialize view components.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_options);
 
+        // initialize view components
         addBusinessButton = (Button) findViewById(R.id.addBusiness);
         addActivityButton = (Button) findViewById(R.id.addActivity);
-        serviceButton = (Button) findViewById(R.id.serviceButton);
-
-        addActivityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainOptionsActivity.this, AddActivitiesActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        addBusinessButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //open in a dialog
-                showAddBusinessDialog();
-            }
-        });
-
-        serviceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //activate the service
-            }
-        });
     }
 
+    /**
+     * addActivity button on click method.
+     * Starts AddActivitiesActivity.
+     * @param v Current view.
+     */
+    public void addActivityButtonOnClick(View v) {
+        // go to AddActivitiesActivity screen
+        Intent intent = new Intent(this, AddActivitiesActivity.class);
+        startActivity(intent);
+    }
 
-    protected void showAddBusinessDialog() {
+    //////////// @// TODO: 12/31/2016 SUPER UGLY!!! FIX THIS!!! 
+    public void addBusinessButtonOnClick(View v) {
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(MainOptionsActivity.this);
         View promptView = layoutInflater.inflate(R.layout.dialog_add_business, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainOptionsActivity.this);
         alertDialogBuilder.setView(promptView);
 
+        // hold onto view components
         final EditText city = (EditText) promptView.findViewById(R.id.city);
         final EditText country = (EditText) promptView.findViewById(R.id.country);
         final EditText email = (EditText) promptView.findViewById(R.id.email);
@@ -93,13 +90,15 @@ public class MainOptionsActivity extends AppCompatActivity {
                         final String web = website.getText().toString();
 
                         //write it to the database
-                        new AsyncTask<Void, Void, Uri>() {
+                        new AsyncTask<Void, Void, Integer>() {
                             @Override
-                            protected Uri doInBackground(final Void... params) {
+                            protected Integer doInBackground(final Void... params) {
                                 ContentValues val = TravelAgenciesContract.AgencyEntry.createContentValues(
-                                        businessID, cty, cntry, mail, namee, phoneNumber, strt, web
+                                        businessID, namee, cntry, cty, strt, phoneNumber, mail, web
                                 );
-                                return getContentResolver().insert(TravelAgenciesContract.AgencyEntry.CONTENT_URI, val);
+                                return Integer.valueOf(
+                                        getContentResolver().insert(TravelAgenciesContract.AgencyEntry.CONTENT_URI, val).getLastPathSegment()
+                                );
                             }
                         }.execute();
                     }

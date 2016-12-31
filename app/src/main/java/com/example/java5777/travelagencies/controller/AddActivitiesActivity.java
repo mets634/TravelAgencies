@@ -2,8 +2,10 @@ package com.example.java5777.travelagencies.controller;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -41,45 +43,51 @@ import static com.example.java5777.travelagencies.model.entities.TripType.HotelV
 import static com.example.java5777.travelagencies.model.entities.TripType.TravelAgency;
 
 public class AddActivitiesActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    // view components
+    private Spinner tripTypeSpinner;
+    private TripType tripType;
+    private EditText country;
+    private EditText startDate;
+    private GregorianCalendar realStartDate = new GregorianCalendar();
+    private EditText endDate;
+    private GregorianCalendar realEndDate = new GregorianCalendar();
+    private EditText price;
+    private EditText description;
+    private EditText businessID;
+    private Button insertButton;
 
-    public Spinner tripTypeSpinner;
-    public TripType tripType;
-    public EditText country;
-    public EditText startDate;
-    public GregorianCalendar realStartDate = new GregorianCalendar();
-    public EditText endDate;
-    public GregorianCalendar realEndDate = new GregorianCalendar();
-    public EditText price;
-    public EditText description;
-    public EditText businessID;
-    public Button insertButton;
-
+    /**
+     * Implementation of onCreate method.
+     * initialize view components.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_activities);
 
+        // initialize view components
         tripTypeSpinner = (Spinner) findViewById(R.id.tripTypeSpinner);
-        setTripTypeSpinner();
-
         country = (EditText) findViewById(R.id.country);
-
         startDate = (EditText) findViewById(R.id.startDate);
-        setDateDrawableRightOnClick(startDate, realStartDate);
-
         endDate = (EditText) findViewById(R.id.endDate);
-        setDateDrawableRightOnClick(endDate, realEndDate);
-
         price = (EditText) findViewById(R.id.price);
         description = (EditText) findViewById(R.id.description);
         businessID = (EditText) findViewById(R.id.businessID);
         insertButton = (Button) findViewById(R.id.insertButton);
 
+        // setup spinner
+        setTripTypeSpinner();
+
+        // setup drawable on click for dates
+        setDateDrawableRightOnClick(this, startDate, realStartDate);
+        setDateDrawableRightOnClick(this, endDate, realEndDate);
+
         insertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (validData()) {
-                    insertActivity();
+                    insertButtonOnClick(v);
                     Intent intent = new Intent(AddActivitiesActivity.this, MainOptionsActivity.class);
                     startActivity(intent);
                 }
@@ -87,12 +95,45 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
         });
     }
 
-    //setting the trip type spinner
+    /**
+     * Implementation of insertbuttonOnClick method.
+     * Inserts the data given into the database.
+     * @param v Current view.
+     */
+    protected void insertButtonOnClick(View v) {
+        try {
+            if (!validData())
+                throw new Exception();
+
+            // get the values of the view grids and parse them if needed
+            final String cntry = country.getText().toString();
+            final Integer prc = Integer.parseInt(price.getText().toString());
+            final String destination = description.getText().toString();
+            final Long agencyID = Long.parseLong(businessID.getText().toString());
+
+            // attempt to insert new activity using an asynctask
+            AddActivityAsyncTask at = new AddActivityAsyncTask(
+                    this, tripType, cntry, realStartDate, realEndDate, prc, destination, agencyID
+            );
+            at.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+        catch (Exception e) {
+            Toast.makeText(this, "Please enter valid data", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    // spinner methods
+
+    /**
+     * Setup up spinner to include
+     * all types of trips.
+     */
     protected void setTripTypeSpinner() {
         tripTypeSpinner.setOnItemSelectedListener(this);
 
-        // Spinner Drop down elements
-        List<String> categories = new ArrayList<String>();
+        // add spinner Drop down elements
+        List<String> categories = new ArrayList<>();
         categories.add("Choose:");
         categories.add("Hotel Vacation Package");
         categories.add("Travel Agency");
@@ -100,7 +141,7 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
         categories.add("Airline");
 
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -108,27 +149,47 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
         // attaching data adapter to spinner
         tripTypeSpinner.setAdapter(dataAdapter);
     }
+
+    /**
+     * Implementation of onItemSelected method.
+     * Chooses the correct trip given by spinner.
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
 
         switch(item) {
-            case "Hotel Vacation Package": setTripType(HotelVacationPackage); break;
-            case "Travel Agency": setTripType(TravelAgency); break;
-            case "Entertainment": setTripType(Entertainment); break;
-            case "Airline": setTripType(Airline); break;
-            default: setTripType(null); break;
+            case "Hotel Vacation Package": tripType = HotelVacationPackage; break;
+            case "Travel Agency": tripType = TravelAgency; break;
+            case "Entertainment": tripType = Entertainment; break;
+            case "Airline": tripType = Airline; break;
+            default: tripType = null; break;
         }
     }
+
+    /**
+     * Implementation of onNothingSelected method.
+     * Sets trip type if nothing was selected.
+     * @param arg0
+     */
+    @Override
     public void onNothingSelected(AdapterView<?> arg0) {
-        setTripType(null);
-    }
-    protected void setTripType (TripType t) {
-        tripType = t;
+        tripType = null;
     }
 
-    //setting the date pick dialog for both dates
+
+    // Date picker methods
+
+    /**
+     * A method to show the date picker.
+     * @param date View components to set text of date to.
+     * @param realDate GregorianCalendar to receive date.
+     */
     protected void showDatePickDialog(final EditText date, final GregorianCalendar realDate) {
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(AddActivitiesActivity.this);
@@ -138,36 +199,52 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
 
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
+                // positive button onClick
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         final DatePicker datePicker = (DatePicker) promptView.findViewById(R.id.datePicker);
                         writeDateFromDatePicker(datePicker, date, realDate);
                     }
                 })
+                // negative button onClick
                 .setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
                             }
                         });
+
         // create an alert dialog
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
-    protected void writeDateFromDatePicker(DatePicker datePicker, EditText date, GregorianCalendar realDate){
+
+    /**
+     * Extract date from date picker into Gregorian calendar
+     * @param datePicker The date picker.
+     * @param date View component to set text to.
+     * @param realDate The GregorianCalendar to set the date for.
+     */
+    protected static void writeDateFromDatePicker(DatePicker datePicker, EditText date, GregorianCalendar realDate){
+        // extract date
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
         int year =  datePicker.getYear();
 
+        // set gregorian calendar
         realDate.set(year, month, day);
 
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.set(year, month, day);
-
+        // set view components date as text
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        date.setText(sdf.format(calendar.getTime()));
+        date.setText(sdf.format(realDate.getTime()));
     }
-    protected void setDateDrawableRightOnClick(final EditText date, final GregorianCalendar realDate) {
+
+    /**
+     * A method to set the date picker drawable to clickable.
+     * @param date View component to set as clickable.
+     * @param realDate Gregorian calendar to write the date to.
+     */
+    protected static void setDateDrawableRightOnClick(final AddActivitiesActivity c, final EditText date, final GregorianCalendar realDate) {
         date.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -176,9 +253,10 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
                 final int DRAWABLE_RIGHT = 2;
                 final int DRAWABLE_BOTTOM = 3;
 
+                // if clicked on, show date pick dialog
                 if(event.getAction() == MotionEvent.ACTION_UP) {
                     if(event.getRawX() >= (date.getRight() - date.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        showDatePickDialog(date, realDate);
+                        c.showDatePickDialog(date, realDate);
                         return true;
                     }
                 }
@@ -187,26 +265,13 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
         });
     }
 
-    //insert activity - async task
-    protected void insertActivity() {
-        //get the values of the view grids and parse them if needed
-        final String cntry = country.getText().toString();
-        final Integer prc = Integer.parseInt(price.getText().toString());
-        final String desc = description.getText().toString();
-        final Long agencyID = Long.parseLong(businessID.getText().toString());
-        //write it to the database
-        new AsyncTask<Void, Void, Uri>() {
-            @Override
-            protected Uri doInBackground(final Void... params) {
-                ContentValues val = TravelAgenciesContract.TripEntry.createContentValues(
-                        tripType, cntry, realStartDate, realEndDate, prc, desc, agencyID
-                );
-                return getContentResolver().insert(TravelAgenciesContract.TripEntry.CONTENT_URI, val);
-            }
-        }.execute();
-    }
 
-    //validation of the data
+    // data validation methods
+
+    /**
+     * A method that validates the data given.
+     * @return Whether all data is good.
+     */
     protected boolean validData() {
         return (checkTripType() && checkCountry() && checkDates() && checkPrice() && checkDescription() && checkBusinessID());
     }
@@ -247,6 +312,66 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
             return false;
         }
         return true;
+    }
+
+    // asynctask extension classes
+
+    /**
+     * A class extending the asynctask class that
+     * inserts an activity into the database.
+     */
+    class AddActivityAsyncTask extends AsyncTask<Void, Void, Integer> {
+        private TripType tripType;
+        private String country;
+        private GregorianCalendar startDate;
+        private GregorianCalendar endDate;
+        private int price;
+        private String destination;
+        private long agencyID;
+
+        private Context currentContext;
+
+        /**
+         * AddActivitiesAsyncTask constructor.
+         * Initializes all data.
+         * @param tripType
+         * @param country
+         * @param startDate
+         * @param endDate
+         * @param price
+         * @param destination
+         * @param agencyID
+         * @param c
+         */
+        public AddActivityAsyncTask(Context c, TripType tripType, String country, GregorianCalendar startDate, GregorianCalendar endDate, int price, String destination, long agencyID) {
+            this.tripType = tripType;
+            this.country = country;
+            this.startDate = startDate;
+            this.endDate = endDate;
+            this.price = price;
+            this.destination = destination;
+            this.agencyID = agencyID;
+
+            currentContext = c;
+        }
+
+        /**
+         * Implementation of doInBackground.
+         * Attempts to insert new activity into database.
+         * @param params
+         * @return CODE from insert attempt.
+         */
+        @Override
+        protected Integer doInBackground(Void... params) {
+            ContentValues val = TravelAgenciesContract.TripEntry.createContentValues(
+                    tripType, country, startDate, endDate, price, destination, agencyID
+            );
+
+            // attempt to insert new activity
+            return Integer.valueOf( // return CODE from uri
+                    currentContext.getContentResolver().insert(TravelAgenciesContract.TripEntry.CONTENT_URI, val).getLastPathSegment()
+            );
+        }
     }
 }
 

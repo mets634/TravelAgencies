@@ -50,6 +50,7 @@
         android:layout_marginTop="81dp"
         android:id="@+id/registerButton"
         android:layout_below="@+id/rememberMeBox"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="registerButtonOnClick"/>
 
 </RelativeLayout>

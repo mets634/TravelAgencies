@@ -28,7 +28,8 @@
         android:layout_marginTop="72dp"
         android:id="@+id/addBusiness"
         android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="addBusinessButtonOnClick"/>
 
     <Button
         android:text="Add Activity"
@@ -38,15 +39,7 @@
         android:id="@+id/addActivity"
         android:layout_below="@+id/addBusiness"
         android:layout_alignLeft="@+id/addBusiness"
-        android:layout_alignStart="@+id/addBusiness" />
-
-    <Button
-        android:text="Service"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:id="@+id/serviceButton"
-        android:layout_below="@+id/addActivity"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignStart="@+id/addBusiness"
+        android:onClick="addActivityButtonOnClick"/>
 
 </RelativeLayout>

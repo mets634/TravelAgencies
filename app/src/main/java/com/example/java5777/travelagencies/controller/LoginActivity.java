@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
      * Clear button handler.
      * @param v View on context.
      */
-    public void ClearButtonOnClick(View v) {
+    public void clearButtonOnClick(View v) {
         username.setText("", TextView.BufferType.EDITABLE);
         password.setText("", TextView.BufferType.EDITABLE);
     }
@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
      * Register button handler.
      * @param v View on context.
      */
-    public void RegisterButtonOnClick(View v) {
+    public void registerButtonOnClick(View v) {
         // go to register activity
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
      * if it's the user, save him in the shared preferences file and move to the main options screen
      * else go to the register screen
      */
-    public void LoginButtonOnClick(View v) {
+    public void loginButtonOnClick(View v) {
         // hold onto credentials
         final String[] credentials = { username.getText().toString(), password.getText().toString() };
 
@@ -122,7 +122,6 @@ public class LoginActivity extends AppCompatActivity {
     class LoginAsyncTask extends AsyncTask<Void, Void, Boolean> {
         private final LoginActivity currentContext; // will hold current context
         private final String[] credentials;
-        private Boolean cancelled;
 
         /**
          * Class constructor that sets the context of the caller.
@@ -131,7 +130,6 @@ public class LoginActivity extends AppCompatActivity {
         public LoginAsyncTask(LoginActivity context, final String[] credentials) {
             currentContext = context;
             this.credentials = credentials;
-            cancelled = false;
         }
 
         /**
@@ -141,6 +139,7 @@ public class LoginActivity extends AppCompatActivity {
          */
         @Override
         protected Boolean doInBackground(Void... params) {
+            // query for user
             Cursor res = getContentResolver().query(UserEntry.CONTENT_URI, null, null, credentials, null);
             return res.getCount() > 0;
         }
