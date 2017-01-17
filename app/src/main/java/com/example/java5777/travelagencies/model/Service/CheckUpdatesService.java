@@ -26,9 +26,7 @@ public class CheckUpdatesService extends Service {
     private final static String ACTION = "ACTION_UPDATE";
     private final static String EXTRA = "EXTRA";
 
-    private final static String USER_EXTRA = "USER_EXTRA";
-    private final static String AGENCY_EXTRA = "AGENCY_EXTRA";
-    private final static String TRIP_EXTRA = "TRIP_EXTRA";
+    private final static String HASBEENUPDATED_EXTRA = "hasBeenUpdated";
 
     private boolean isRunning = false;
     private DSManager manager;
@@ -73,26 +71,11 @@ public class CheckUpdatesService extends Service {
                         // get has been updated
                         Cursor current = getContentResolver().query(HasBeenUpdatedEntry.CONTENT_URI, null, null, null, null);
 
-                        if (userUpdated(current)) {
+                        if (updated(current)) {
                             intent = new Intent(ACTION);
-                            intent.putExtra(EXTRA, USER_EXTRA);
-                            sendBroadcast( intent );
+                            intent.putExtra(EXTRA, HASBEENUPDATED_EXTRA);
+                            sendBroadcast(intent);
                         }
-
-
-                        if (agencyUpdated(current)) {
-                            intent = new Intent(ACTION);
-                            intent.putExtra(EXTRA, AGENCY_EXTRA);
-                            sendBroadcast( intent );
-                        }
-
-                        if (tripUpdated(current)) {
-                            intent = new Intent(ACTION);
-                            intent.putExtra(EXTRA, TRIP_EXTRA);
-                            sendBroadcast( intent );
-                        }
-
-
                     }
                     catch (InterruptedException e) {
                         e.printStackTrace();
@@ -127,15 +110,7 @@ public class CheckUpdatesService extends Service {
 
     // helpful methods
 
-    private boolean userUpdated(Cursor c) {
-        return HasBeenUpdatedEntry.UserHasBeenUpdated( c );
-    }
-
-    private boolean agencyUpdated(Cursor c) {
-        return HasBeenUpdatedEntry.AgencyHasBeenUpdated( c );
-    }
-
-    private boolean tripUpdated(Cursor c) {
-        return HasBeenUpdatedEntry.TripHasBeenUpdated( c );
+    private boolean updated(Cursor c) {
+        return HasBeenUpdatedEntry.hasBeenUpdated( c );
     }
 }

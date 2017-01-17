@@ -50,6 +50,11 @@ public class RegisterActivity extends AppCompatActivity {
         prefs = new MySharedPreferences(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     /**
      * A OnClick method for the register button.
      * @param v the view.

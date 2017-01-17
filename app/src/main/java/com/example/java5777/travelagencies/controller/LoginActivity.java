@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     MySharedPreferences prefs;
 
     // service intent
-    private Intent service;
+    public static Intent service = null;
 
     /**
      * Initialize activity.
@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         service = new Intent(this, CheckUpdatesService.class);
 
         // start service
-        startService(service);
+        this.startService(service);
     }
 
     /**
@@ -76,9 +76,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        // stop service
-        stopService(service);
     }
 
     /**

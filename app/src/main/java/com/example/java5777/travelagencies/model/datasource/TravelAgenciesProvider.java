@@ -21,15 +21,13 @@ import com.example.java5777.travelagencies.model.backend.DSManagerFactory;
  * @see TravelAgenciesContract How to use the content provider.
  */
 public class TravelAgenciesProvider extends ContentProvider {
-
-
-
     private final static int AGENCY_URI_ID = 1;
     private final static int USER_URI_ID = 2;
     private final static int TRIP_URI_ID = 3;
     private final static int HASBEENUPDATED_URI_ID = 4;
 
-    private static DSManager manager = DSManagerFactory.getDSManager(DSManagerFactory.LIST);
+    private static DSManager manager = DSManagerFactory.getDSManager(DSManagerFactory.PHP);
+    private static DSManager usersManager = DSManagerFactory.getDSManager(DSManagerFactory.LIST);
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     // Set the URI's
@@ -60,7 +58,7 @@ public class TravelAgenciesProvider extends ContentProvider {
             case USER_URI_ID:
                 if (selectionArgs.length != 2)
                     return null;
-                return manager.getUsers(selectionArgs[0], selectionArgs[1]);
+                return usersManager.getUsers(selectionArgs[0], selectionArgs[1]);
 
             case HASBEENUPDATED_URI_ID:
                 return manager.hasBeenUpdated();
@@ -89,7 +87,7 @@ public class TravelAgenciesProvider extends ContentProvider {
                 return ContentUris.withAppendedId(TravelAgenciesContract.TripEntry.CONTENT_URI, code);
 
             case USER_URI_ID:
-                code = manager.InsertUser(values);
+                code = usersManager.InsertUser(values);
                 return ContentUris.withAppendedId(TravelAgenciesContract.UserEntry.CONTENT_URI, code);
 
             default:

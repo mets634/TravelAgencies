@@ -88,31 +88,20 @@ public final class TravelAgenciesContract {
     public static final class HasBeenUpdatedEntry implements BaseColumns {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_HASBEENUPDATED).build();
 
-        public static final String COLUMN_USER = "user";
-        public static final String COLUMN_AGENCY = "agency";
-        public static final String COLUMN_TRIP = "trip";
+        public static final String COLUMN_HASBEENUPDATED = "hasBeenUpdated";
 
         public static final String[] COLUMNS = {
-                COLUMN_USER,
-                COLUMN_AGENCY,
-                COLUMN_TRIP
+                COLUMN_HASBEENUPDATED
         };
 
         // Methods to help out once cursor has been returned
 
-        public static boolean UserHasBeenUpdated(Cursor cur) {
-            cur.moveToFirst(); // move cursor to start
-            return cur.getInt( cur.getColumnIndex( HasBeenUpdatedEntry.COLUMN_USER ) ) > 0;
-        }
+        public static boolean hasBeenUpdated(Cursor cur) {
+            if (cur == null)
+                return false;
 
-        public static boolean AgencyHasBeenUpdated(Cursor cur) {
-            cur.moveToFirst(); // move cursor to beggining
-            return cur.getInt( cur.getColumnIndex( HasBeenUpdatedEntry.COLUMN_AGENCY ) ) > 0;
-        }
-
-        public static boolean TripHasBeenUpdated(Cursor cur) {
             cur.moveToFirst(); // move cursor to start
-            return cur.getInt( cur.getColumnIndex( HasBeenUpdatedEntry.COLUMN_TRIP ) ) > 0;
+            return cur.getInt( cur.getColumnIndex( HasBeenUpdatedEntry.COLUMN_HASBEENUPDATED ) ) > 0;
         }
     }
 
@@ -149,7 +138,7 @@ public final class TravelAgenciesContract {
         public static final String COLUMN_COUNTRY = "country";
         public static final String COLUMN_CITY = "city";
         public static final String COLUMN_STREET = "street";
-        public static final String COLUMN_PHONENUMBER = "phonenumber";
+        public static final String COLUMN_PHONENUMBER = "phoneNumber";
         public static final String COLUMN_EMAIL = "email";
         public static final String COLUMN_WEBSITE = "website";
         
@@ -171,7 +160,7 @@ public final class TravelAgenciesContract {
          * @throws Exception
          */
         public static ArrayList<Agency> cursorToList(Cursor agencies) throws Exception {
-            if (agencies == null)
+            if (agencies == null || agencies.getCount() == 0)
                 return new ArrayList<>();
 
             if (!agencies.getColumnNames().equals(COLUMNS)) // incorrect cursor
@@ -284,7 +273,7 @@ public final class TravelAgenciesContract {
          * @throws Exception
          */
         public static ArrayList<User> cursorToUsers(Cursor users) throws Exception {
-            if (users == null)
+            if (users == null || users.getCount() == 0)
                 return new ArrayList<>();
 
             if (!users.getColumnNames().equals(COLUMNS)) // incorrect cursor
@@ -355,10 +344,10 @@ public final class TravelAgenciesContract {
     public static final class TripEntry implements  BaseColumns {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_TRIP).build();
 
-        public static final String COLUMN_TYPE = "type";
+        public static final String COLUMN_TYPE = "tripType";
         public static final String COLUMN_COUNTRY = "country";
-        public static final String COLUMN_START = "start";
-        public static final String COLUMN_END = "end";
+        public static final String COLUMN_START = "startDate";
+        public static final String COLUMN_END = "endDate";
         public static final String COLUMN_PRICE = "price";
         public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_AGENCYID = "agencyID";
@@ -381,7 +370,7 @@ public final class TravelAgenciesContract {
          * @throws Exception
          */
         public static ArrayList<Trip> cursorToList(Cursor trips) throws Exception {
-            if (trips == null)
+            if (trips == null || trips.getCount() == 0)
                 return new ArrayList<>();
 
             if (!trips.getColumnNames().equals(COLUMNS)) // incorrect cursor

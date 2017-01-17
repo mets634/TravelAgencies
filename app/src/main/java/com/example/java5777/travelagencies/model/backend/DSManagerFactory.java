@@ -18,16 +18,19 @@ public class DSManagerFactory {
      */
     private static HashMap<String, DSManager> dsManagers;
 
+    public final static String LIST = "List";
+    public final static String PHP = "PHP";
+
     /**
      * Initializing the dsManagers variable.
      */
     static {
         dsManagers = new HashMap<>();
 
-        dsManagers.put("List", new ListDSManager());
+        dsManagers.put(LIST, new ListDSManager());
+        dsManagers.put(PHP, new PHPServiceManager());
     }
 
-    public final static String LIST = "List";
 
     /**
      * Factory method to return the correct type of
