@@ -94,6 +94,9 @@ public class LoginActivity extends AppCompatActivity {
     public void registerButtonOnClick(View v) {
         // go to register activity
         Intent intent = new Intent(this, RegisterActivity.class);
+        intent.putExtra(RegisterActivity.USERNAME, username.getText().toString());
+        intent.putExtra(RegisterActivity.PASSWORD, password.getText().toString());
+
         startActivity(intent);
     }
 

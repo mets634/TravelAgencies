@@ -30,6 +30,9 @@ public class RegisterActivity extends AppCompatActivity {
     // shared preferences
     private MySharedPreferences prefs;
 
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+
     /**
      * Implementation of onCreate method to
      * initialize all view components and shared preferences.
@@ -45,6 +48,16 @@ public class RegisterActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.password);
         rememberMeBox = (CheckBox) findViewById(R.id.rememberMeBox);
         registerButton = (Button) findViewById(R.id.registerButton);
+
+        // get intent information
+        Intent intent = getIntent();
+        String _username = (String) intent.getExtras().get(USERNAME);
+        String _password = (String) intent.getExtras().get(PASSWORD);
+
+        // set username and password as what
+        // was sent by intent
+        username.setText(_username);
+        password.setText(_password);
 
         // initialize shared preferences
         prefs = new MySharedPreferences(this);
