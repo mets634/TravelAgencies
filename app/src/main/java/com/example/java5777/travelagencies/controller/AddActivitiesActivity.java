@@ -307,7 +307,7 @@ public class AddActivitiesActivity extends AppCompatActivity implements AdapterV
             text.setTextColor(Color.RED);
             return false;
         }
-        return true;
+        else return true;
     }
     protected boolean checkDescription() {
         return true;

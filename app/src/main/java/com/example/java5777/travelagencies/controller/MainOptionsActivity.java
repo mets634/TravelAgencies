@@ -81,6 +81,9 @@ public class MainOptionsActivity extends AppCompatActivity {
                         if(validData()) {
                             insertBusiness();
                         }
+                        else {
+                            //Toast toast = new Toast(context);
+                        }
                     }
 
                     protected void insertBusiness() {
@@ -113,15 +116,19 @@ public class MainOptionsActivity extends AppCompatActivity {
                         );
                     }
                     protected boolean checkBusinessCity() {
+                        if (city.getText().toString() == "") return false;
                         return true;
+
                     }
                     protected boolean checkBusinessCountry() {
+                        if (country.getText().toString() == "") return false;
                         return true;
                     }
                     protected boolean checkBusinessEmail() {
                         return true;
                     }
                     protected boolean checkBusinessID() {
+                        if (businessId.getText().toString() == "") return false;
                         return true;
                     }
                     protected boolean checkBusinessName() {
