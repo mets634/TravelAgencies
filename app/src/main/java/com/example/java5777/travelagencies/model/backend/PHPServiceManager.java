@@ -11,6 +11,7 @@ import com.example.java5777.travelagencies.model.entities.Agency;
 import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract.AgencyEntry;
 import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract.TripEntry;
 import com.example.java5777.travelagencies.model.entities.Trip;
+import com.example.java5777.travelagencies.model.entities.TripType;
 
 import java.util.ArrayList;
 
@@ -82,6 +83,35 @@ public class PHPServiceManager implements  DSManager {
         try {
             ArrayList<Trip> trips = PHPService.cloneTripArrayList();
             for (Trip t : trips) {
+                // format data into list
+                ArrayList<String> temp = new ArrayList<>();
+                temp.add(t.getType().toString());
+                temp.add(t.getCountry());
+                temp.add( ( (Long) t.getStart().getTimeInMillis() ).toString() );
+                temp.add( ( (Long) t.getEnd().getTimeInMillis() ) .toString());
+                temp.add(t.getPrice().toString());
+                temp.add(t.getDescription());
+                temp.add(((Long) t.getAgencyID()).toString());
+
+                cursor.addRow(temp); // insert data
+            }
+
+            return cursor;
+        }
+        catch (Exception e) {
+            return cursor;
+        }
+    }
+
+    @Override
+    public Cursor getTravelAgencyTrips() {
+        MatrixCursor cursor = new MatrixCursor(TripEntry.COLUMNS);
+        try {
+            ArrayList<Trip> trips = PHPService.cloneTripArrayList();
+            for (Trip t : trips) {
+                if (t.getType() != TripType.TravelAgency) // wrong type of trip
+                         continue; // skip this trip
+
                 // format data into list
                 ArrayList<String> temp = new ArrayList<>();
                 temp.add(t.getType().toString());

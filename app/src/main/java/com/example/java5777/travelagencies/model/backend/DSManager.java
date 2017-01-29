@@ -57,6 +57,11 @@ public interface DSManager {
      */
     Cursor getTrips();
 
+    /**
+     * @return A cursor containing all trips that are TravelAgency-type.
+     */
+    Cursor getTravelAgencyTrips();
+
 
     /**
      * A method that checks whether

@@ -178,8 +178,6 @@ public class ListDSManager implements DSManager {
 
     @Override
     public Cursor getTrips() {
-
-
         MatrixCursor cursor = new MatrixCursor(TripEntry.COLUMNS); // create cursor
 
         // for each trip, insert it into cursor
@@ -200,6 +198,30 @@ public class ListDSManager implements DSManager {
         return cursor;
     }
 
+    @Override
+    public Cursor getTravelAgencyTrips() {
+        MatrixCursor cursor = new MatrixCursor(TripEntry.COLUMNS); // create cursor
+
+        // for each trip, insert it into cursor
+        for (Trip t : ListDS.cloneTripArrayList()) {
+            if (t.getType() != TripType.TravelAgency) // wrong type
+                    continue; // skip this trip
+
+            // format data into list
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add(t.getType().toString());
+            temp.add(t.getCountry());
+            temp.add( ( (Long) t.getStart().getTimeInMillis() ).toString() );
+            temp.add( ( (Long) t.getEnd().getTimeInMillis() ) .toString());
+            temp.add(t.getPrice().toString());
+            temp.add(t.getDescription());
+            temp.add(((Long) t.getAgencyID()).toString());
+
+            cursor.addRow(temp); // insert data
+        }
+
+        return cursor;
+    }
 
     // Check if data source has been updated operation
 

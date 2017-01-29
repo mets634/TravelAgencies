@@ -1,15 +1,22 @@
 package com.example.java5777.travelagencies.model.datasource;
 
 import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
+import android.database.CharArrayBuffer;
+import android.database.ContentObserver;
 import android.database.Cursor;
+import android.database.DataSetObserver;
+import android.database.MatrixCursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.example.java5777.travelagencies.model.backend.DSManager;
 import com.example.java5777.travelagencies.model.backend.DSManagerFactory;
+import com.example.java5777.travelagencies.model.entities.TripType;
 
 /**
  * Created by yonah on 11/30/2016.
@@ -53,7 +60,7 @@ public class TravelAgenciesProvider extends ContentProvider {
                 return manager.getAgencies();
 
             case TRIP_URI_ID:
-                return manager.getTrips();
+                return manager.getTravelAgencyTrips();
 
             case USER_URI_ID:
                 if (selectionArgs.length != 2)
