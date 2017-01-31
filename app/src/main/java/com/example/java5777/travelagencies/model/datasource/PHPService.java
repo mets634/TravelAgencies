@@ -2,6 +2,8 @@ package com.example.java5777.travelagencies.model.datasource;
 
 import android.content.ContentValues;
 import android.net.Uri;
+import android.util.Log;
+import android.util.Pair;
 
 import com.example.java5777.travelagencies.model.entities.Address;
 import com.example.java5777.travelagencies.model.entities.Agency;
@@ -17,14 +19,21 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.net.URL;
 import java.util.GregorianCalendar;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
@@ -36,7 +45,7 @@ import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
  * A class to give access to online database.
  */
 public class PHPService {
-    private static final String BASE_URI = "HTTP://www.yonahm.vlab.jct.ac.il/?";
+    private static final String BASE_URI = "HTTP://yonahm.vlab.jct.ac.il/";
     private static final String QUERY_ACTION_URI = "action=query";
     private static final String INSERT_ACTION_URI = "action=insert";
     private static final String AGENCIES_TABLE_URI= "table=Agencies";
@@ -52,14 +61,11 @@ public class PHPService {
      * @param cv The new agency to insert.
      */
     public static void insertAgency(ContentValues cv) throws Exception {
-       String uri = BASE_URI + INSERT_ACTION_URI + "&" + AGENCIES_TABLE_URI;
-
-        // convert cv to uri
-        for (String column : AgencyEntry.COLUMNS)
-            uri += "&" + column + "=" + cv.getAsString(column);
+        cv.put("table", "Agencies");
+        cv.put("action", "insert");
 
         try {
-            String res = GET(uri);
+            String res = POST(BASE_URI, cv);
         }
         catch (Exception e) {
             throw new Exception("Unable To Insert New Agency");
@@ -72,7 +78,7 @@ public class PHPService {
      * @return Copy of business's in the data source.
      */
     public static ArrayList<Agency> cloneAgencyArrayList() throws Exception {
-        String uri = BASE_URI + QUERY_ACTION_URI + "&" + AGENCIES_TABLE_URI;
+        String uri = BASE_URI + "?" + QUERY_ACTION_URI + "&" + AGENCIES_TABLE_URI;
 
         try {
             String res = GET(uri);
@@ -92,14 +98,11 @@ public class PHPService {
      * @param cv The new trip to insert.
      */
     public static void insertTrip(ContentValues cv) throws Exception {
-        String uri = BASE_URI + INSERT_ACTION_URI + "&" + TRIPS_TABLE_URI;
-
-        // convert cv to a uri
-        for (String column : TripEntry.COLUMNS)
-            uri += "&" + column + "=" + cv.getAsString(column);
+        cv.put("table", "Trips");
+        cv.put("action", "insert");
 
         try {
-            String res = GET(uri);
+            String res = POST(BASE_URI, cv);
         }
         catch (Exception e) {
             throw new Exception("Unable To Insert New Agency");
@@ -111,7 +114,7 @@ public class PHPService {
      * @return Copy of trips in the data source.
      */
     public static ArrayList<Trip> cloneTripArrayList() throws Exception {
-        String uri = BASE_URI + QUERY_ACTION_URI + "&" + TRIPS_TABLE_URI;
+        String uri = BASE_URI + "?" + QUERY_ACTION_URI + "&" + TRIPS_TABLE_URI;
 
         try {
             String res = GET(uri);
@@ -134,25 +137,76 @@ public class PHPService {
      * @throws Exception
      */
     private static String GET(String uri) throws Exception {
-    URL obj = new URL(uri);
-    HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-    con.setRequestMethod("GET");
-    if (con.getResponseCode() == HttpURLConnection.HTTP_OK) { // success
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-        // print result
-        return response.toString();
-    }
-    else
-        return "";
+        URL obj = new URL(uri);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        if (con.getResponseCode() == HttpURLConnection.HTTP_OK) { // success
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            con.disconnect();
 
+            // print result
+            return response.toString();
+        }
+        else
+            return "";
     }
+
+    /**
+     * A method to make a post request to a given url.
+     * @param url The url to go to
+     * @param params The content values to send.
+     * @return A HttpURLConnection object containing result.
+     * @throws Exception
+     */
+    public static String POST(String url, ContentValues params) throws IOException {
+
+        //Convert Map<String,Object> into key=value&key=value pairs.
+        StringBuilder postData = new StringBuilder();
+        for (String param : params.keySet()) {
+            if (postData.length() != 0) postData.append('&');
+            postData.append(URLEncoder.encode(param, "UTF-8"));
+            postData.append('=');
+            postData.append(URLEncoder.encode(String.valueOf(params.get(param)), "UTF-8"));
+        }
+
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("POST");
+
+        // For POST only - START
+        con.setDoOutput(true);
+        OutputStream os = con.getOutputStream();
+        os.write(postData.toString().getBytes("UTF-8"));
+        os.flush();
+        os.close();
+        // For POST only - END
+
+        int responseCode = con.getResponseCode();
+        System.out.println("POST Response Code :: " + responseCode);
+
+        if (responseCode == HttpURLConnection.HTTP_OK) { //success
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            return response.toString();
+        }
+        else return "";
+    }
+
+
 
     /**
      * A method to convert a JSON object in a
