@@ -23,7 +23,13 @@
         <service
             android:name=".model.Service.CheckUpdatesService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true">
+
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.TravelAgencies.checkUpdate" />
+            </intent-filter>
+        </service>
 
         <provider
             android:name="com.example.java5777.travelagencies.model.datasource.TravelAgenciesProvider"
