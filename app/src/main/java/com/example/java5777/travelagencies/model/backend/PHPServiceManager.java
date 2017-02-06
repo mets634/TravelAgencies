@@ -14,6 +14,9 @@ import com.example.java5777.travelagencies.model.entities.Trip;
 import com.example.java5777.travelagencies.model.entities.TripType;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by yonah on 1/16/17.
@@ -140,13 +143,11 @@ public class PHPServiceManager implements  DSManager {
             ArrayList<Agency> newAgencies = TravelAgenciesContract.AgencyEntry.cursorToList( getAgencies() );
             ArrayList<Trip> newTrips = TravelAgenciesContract.TripEntry.cursorToList( getTrips() );
 
-            boolean a = !(
-                    newAgencies.containsAll(agencies) && agencies.containsAll(newAgencies)
-            && newTrips.containsAll(trips) && trips.containsAll(newTrips)
-            );
+            boolean a = agencies.size() == newAgencies.size()
+                    && trips.size() == newTrips.size();
 
             ArrayList<Integer> res = new ArrayList<>();
-            if (a) {
+            if (!a) {
                 agencies = newAgencies;
                 trips = newTrips;
                 res.add(1);

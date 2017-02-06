@@ -21,7 +21,7 @@ import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContra
  */
 public class CheckUpdatesService extends Service {
     private static final String TAG = "CheckUpdatesService";
-    private final static int INTERVAL = 10;
+    private final static int INTERVAL = 5;
 
     private final static String ACTION = "ACTION_UPDATE";
     private final static String EXTRA = "EXTRA";
@@ -72,10 +72,13 @@ public class CheckUpdatesService extends Service {
                         Cursor current = getContentResolver().query(HasBeenUpdatedEntry.CONTENT_URI, null, null, null, null);
 
                         if (updated(current)) {
+                            Log.d(TAG, "doInBackground: got yes");
                             intent = new Intent(ACTION);
                             intent.putExtra(EXTRA, HASBEENUPDATED_EXTRA);
                             sendBroadcast(intent);
                         }
+                        else
+                            Log.d(TAG, "got no");
                     }
                     catch (InterruptedException e) {
                         e.printStackTrace();

@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.java5777.travelagencies.R;
+import com.example.java5777.travelagencies.model.Service.CheckUpdatesService;
 import com.example.java5777.travelagencies.model.datasource.TravelAgenciesContract;
 import com.example.java5777.travelagencies.model.entities.TripType;
 
@@ -27,6 +28,8 @@ public class MainOptionsActivity extends AppCompatActivity {
     // view components
     private Button addBusinessButton;
     private Button addActivityButton;
+
+    private Intent service = null;
 
     /**
      * Implementation of onCreate method.
@@ -41,6 +44,18 @@ public class MainOptionsActivity extends AppCompatActivity {
         // initialize view components
         addBusinessButton = (Button) findViewById(R.id.addBusiness);
         addActivityButton = (Button) findViewById(R.id.addActivity);
+
+        // initialize service intent
+        service = new Intent(this, CheckUpdatesService.class);
+
+        // start service
+        this.startService(service);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(service);
     }
 
     /**

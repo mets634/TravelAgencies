@@ -62,12 +62,6 @@ public class LoginActivity extends AppCompatActivity {
         // set text editors to value inside shared preference
         username.setText(prefs.getUserName());
         password.setText(prefs.getPassword());
-
-        // initialize service intent
-        service = new Intent(this, CheckUpdatesService.class);
-
-        // start service
-        this.startService(service);
     }
 
     /**

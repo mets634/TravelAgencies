@@ -102,6 +102,32 @@ public class Agency {
         this.website = website;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Agency agency = (Agency) o;
+
+        if (ID != agency.ID) return false;
+        if (!name.equals(agency.name)) return false;
+        if (!address.equals(agency.address)) return false;
+        if (!phoneNumber.equals(agency.phoneNumber)) return false;
+        if (!email.equals(agency.email)) return false;
+        return website.equals(agency.website);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (ID ^ (ID >>> 32));
+        result = 31 * result + name.hashCode();
+        result = 31 * result + address.hashCode();
+        result = 31 * result + phoneNumber.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + website.hashCode();
+        return result;
+    }
 
     // Attributes
 
